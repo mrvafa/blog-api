@@ -28,4 +28,4 @@ Not ready!!
 - [X] Start & setup project.
 - [X] Create custom user model.
 - [X] Create test for user model.
-- [ ] Install django allauth, rest-api and set urls.
+- [X] Install django allauth, rest-api and set urls.
