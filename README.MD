@@ -26,6 +26,6 @@ Not ready!!
 <a name="todo"></a>
 ## TODO
 - [X] Start & setup project.
-- [ ] Create custom user model.
+- [X] Create custom user model.
+- [X] Create test for user model.
 - [ ] Install django allauth, rest-api and set urls.
-- [ ] Create test for user model.
