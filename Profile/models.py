@@ -1,0 +1,81 @@
+import os
+
+import requests
+from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.db import models
+
+from BlogApi.Settings.fields import GENDER_CHOICES, PHONE_NUMBER_MAX_LENGTH
+from Profile.validators.birthday_validators import age_max_validator, age_min_validator
+from Profile.validators.phone_number_validators import iran_phone_validate
+from Profile.validators.profile_image_validator import profile_image_validate
+
+
+class Profile(models.Model):
+    # django user model has first_name, last_name, email, joined_time and password
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        unique=True
+    )
+    gender = models.TextField(
+        blank=True,
+        null=True,
+        choices=GENDER_CHOICES,
+        max_length=max(len(p[0]) for p in GENDER_CHOICES)
+    )
+    birthday = models.DateField(
+        blank=True,
+        null=True,
+        validators=[age_min_validator, age_max_validator]
+    )
+    phone_number = models.TextField(
+        blank=True,
+        null=True,
+        max_length=PHONE_NUMBER_MAX_LENGTH,
+        validators=[iran_phone_validate],
+        unique=True,
+    )
+    phone_number_verified = models.BooleanField(default=False)
+    # TODO: notifications using message model
+    image = models.ImageField(
+        blank=True,
+        null=True,
+        upload_to='profile_images/%m',
+        validators=[profile_image_validate]
+    )
+
+    def __str__(self):
+        return self.user.username
+
+    def clean(self, *args, **kwargs):
+        if self.phone_number and self.phone_number.startswith('0'):
+            self.phone_number = '+98' + self.phone_number[1:]
+        super(Profile, self).clean()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(Profile, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.image:
+            os.remove(self.image.path)
+        super(Profile, self).delete(*args, **kwargs)
+
+    def set_profile_image(self, image_path):
+        image_content = requests.get(image_path).content \
+            if image_path.startswith('http://') or image_path.startswith('https://') else open(image_path, 'rb').read()
+        image_name = os.path.basename(image_path)
+        old_image_path = ''
+        if self.image and os.path.isfile(self.image.path):
+            old_image_path = self.image.path
+        self.image = SimpleUploadedFile(
+            name=image_name,
+            content_type='image/jpeg',
+            content=image_content,
+        )
+        self.save()
+
+        if old_image_path:
+            os.remove(old_image_path)
