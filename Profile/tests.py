@@ -106,10 +106,13 @@ class TestProfile(TestCase):
         profile = Profile(user=user, )
         profile.save()
 
+        number_of_images_before_creating_profiles = len(
+            os.listdir(os.path.join(settings.MEDIA_ROOT, 'profile_images', f'{datetime.now().month:02}'))
+        )
         url = 'https://donoghte.com/wp-content/uploads/2021/02/9ce9b71fecb95ae0a7ff94c36d0a9942-donoghte.com_.jpg'
         for _ in range(3):
             profile.set_profile_image(url)
         self.assertEqual(
-            1,
+            1 + number_of_images_before_creating_profiles,
             len(os.listdir(os.path.join(settings.MEDIA_ROOT, 'profile_images', f'{datetime.now().month:02}')))
         )
