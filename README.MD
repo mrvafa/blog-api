@@ -29,3 +29,6 @@ Not ready!!
 - [X] Create custom user model.
 - [X] Create test for user model.
 - [X] Install django allauth, rest-api and set urls.
+- [X] Create email for user (console base).
+- [ ] Create position for user.
+- [ ] Set login with both email and username

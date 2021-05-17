@@ -6,12 +6,13 @@ By changing this setting to False, logged in users will not be redirected when t
 """
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 
+ACCOUNT_EMAIL_REQUIRED = True
 """
 ACCOUNT_AUTHENTICATION_METHOD (=”username” | “email” | “username_email”)
 Specifies the login method to use – whether the user logs in by entering their username, e-mail address, or either one 
 of both. Setting this to “email” requires ACCOUNT_EMAIL_REQUIRED=True
 """
-ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 
 """
 Determines whether or not an e-mail address is automatically confirmed by a GET request. GET is not designed to modify 
@@ -24,7 +25,7 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL (=settings.LOGIN_URL)
 The URL to redirect to after a successful e-mail confirmation, in case no user is logged in.
 """
-ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/'
+# ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/'
 
 """
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL (=None)
@@ -58,7 +59,7 @@ or “none” to allow logins with an unverified e-mail address. In case of “o
 is still sent, whereas in case of “none” no e-mail verification mails are sent.
 """
 # TODO: uncomment line bellow
-# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 """
 ACCOUNT_EMAIL_SUBJECT_PREFIX (=”[Site] “)
@@ -220,7 +221,7 @@ signup went through uninterruptedly, for example, without any side steps due to 
 requires the user to always pass through certain onboarding views after signup, you will have to keep track of state 
 indicating whether or not the user successfully onboarded, and handle accordingly.
 """
-ACCOUNT_SIGNUP_REDIRECT_URL = 'settings.LOGIN_REDIRECT_URL'
+ACCOUNT_SIGNUP_REDIRECT_URL = '/'
 
 """
 ACCOUNT_TEMPLATE_EXTENSION (=”html”)
@@ -330,5 +331,13 @@ SOCIALACCOUNT_PROVIDERS = {
         'VERIFIED_EMAIL': False,
     }
 }
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 SITE_ID = 1
