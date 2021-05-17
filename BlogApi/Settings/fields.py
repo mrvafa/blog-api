@@ -10,3 +10,5 @@ PROFILE_IMAGE_SIZE_MAX = 5  # in MB
 PROFILE_IMAGE_HEIGHT_MIN = 128
 PROFILE_IMAGE_WIDTH_MIN = 128
 
+# The default should be in index 0
+POSITION_CHOICES = [('us', 'User'), ('ad', 'Admin'), ('au', 'Author'), ('su', 'Superuser')]

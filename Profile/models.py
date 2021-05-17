@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import models
 
-from BlogApi.Settings.fields import GENDER_CHOICES, PHONE_NUMBER_MAX_LENGTH
+from BlogApi.Settings.fields import GENDER_CHOICES, PHONE_NUMBER_MAX_LENGTH, POSITION_CHOICES
 from Profile.validators.birthday_validators import age_max_validator, age_min_validator
 from Profile.validators.phone_number_validators import iran_phone_validate
 from Profile.validators.profile_image_validator import profile_image_validate
@@ -44,6 +44,11 @@ class Profile(models.Model):
         null=True,
         upload_to='profile_images/%m',
         validators=[profile_image_validate]
+    )
+    position = models.CharField(
+        choices=POSITION_CHOICES,
+        default=POSITION_CHOICES[0][0],
+        max_length=max(len(p[0]) for p in POSITION_CHOICES),
     )
 
     def __str__(self):
