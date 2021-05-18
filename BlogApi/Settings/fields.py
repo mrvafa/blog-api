@@ -18,5 +18,14 @@ TAG_IMAGE_HEIGHT_MIN = 128
 TAG_IMAGE_WIDTH_MIN = 128
 
 TAG_TITLE_LENGTH_MAX = 100
+POST_TITLE_LENGTH_MAX = 100
+
+POST_ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'png', 'gif', 'jpeg']
+POST_IMAGE_HEIGHT_MAX = 2000
+POST_IMAGE_WIDTH_MAX = 2000
+POST_IMAGE_SIZE_MAX = 15  # in MB
+POST_IMAGE_HEIGHT_MIN = 128
+POST_IMAGE_WIDTH_MIN = 128
+
 # The default should be in index 0
 POSITION_CHOICES = [('us', 'User'), ('ad', 'Admin'), ('au', 'Author'), ('su', 'Superuser')]

@@ -24,4 +24,5 @@ INSTALLED_APPS = [
 
     'Profile.apps.ProfileConfig',
     'Tag.apps.TagConfig',
+    'Post.apps.PostConfig',
 ]
