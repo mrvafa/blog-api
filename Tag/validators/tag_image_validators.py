@@ -1,4 +1,4 @@
-from PIL.Image import Image
+import PIL.Image
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from filetype import filetype
@@ -11,7 +11,7 @@ def tag_image_validate(image):
             settings.ERROR_MESSAGES['TAG_IMAGE_FORMAT_INVALID']
         )
 
-    im = Image.open(image)
+    im = PIL.Image.open(image)
     width, height = im.size
 
     errors = []
