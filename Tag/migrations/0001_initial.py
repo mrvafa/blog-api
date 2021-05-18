@@ -17,12 +17,12 @@ class Migration(migrations.Migration):
             name='Tag',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('added_datetime', models.DateTimeField(auto_created=True, blank=True, null=True)),
                 ('title', models.CharField(max_length=100, unique=True)),
                 ('slug', models.CharField(editable=False, max_length=100, unique=True)),
-                ('image', models.ImageField(blank=True, null=True, upload_to='tag/%d', validators=[Tag.validators.tag_image_validators.tag_image_validate])),
+                ('image', models.ImageField(blank=True, null=True, upload_to='tag/%m', validators=[Tag.validators.tag_image_validators.tag_image_validate])),
                 ('body', ckeditor_uploader.fields.RichTextUploadingField(blank=True, null=True)),
-                ('modify_datetime', models.DateTimeField(auto_now_add=True, null=True)),
+                ('added_datetime', models.DateTimeField(auto_now_add=True, null=True)),
+                ('modify_datetime', models.DateTimeField(auto_now=True, null=True)),
             ],
         ),
     ]
