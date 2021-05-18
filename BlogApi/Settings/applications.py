@@ -12,6 +12,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'django_cleanup',
 
     'rest_auth.registration',
 

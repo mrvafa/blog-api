@@ -34,5 +34,6 @@ Not ready!!
 - [X] Create position for profile.
 - [X] Create tag app and model.
 - [X] Create post app and model.
-- [ ] Create API for post (list, single, add, edit and remove).
+- [X] Create API for post (list, single, add, edit and remove).
 - [ ] Create API for tag (list, single, add, edit and remove).
+- [ ] Customize API for editing post and tag. (Change post's and tag's image, and remove tag's image.) 
