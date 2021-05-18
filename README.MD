@@ -32,3 +32,7 @@ Not ready!!
 - [X] Create email for user (console base).
 - [X] Set login with both email and username
 - [X] Create position for profile.
+- [X] Create tag app and model.
+- [ ] Create post app and model.
+- [ ] Create API for post (list, single, add, edit and remove).
+- [ ] Create API for tag (list, single, add, edit and remove).

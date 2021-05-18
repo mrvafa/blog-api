@@ -19,5 +19,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
 
+    'ckeditor',
+    'ckeditor_uploader',
+
     'Profile.apps.ProfileConfig',
+    'Tag.apps.TagConfig',
 ]

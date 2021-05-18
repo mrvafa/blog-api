@@ -10,5 +10,13 @@ PROFILE_IMAGE_SIZE_MAX = 5  # in MB
 PROFILE_IMAGE_HEIGHT_MIN = 128
 PROFILE_IMAGE_WIDTH_MIN = 128
 
+TAG_ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'png', 'gif', 'jpeg']
+TAG_IMAGE_HEIGHT_MAX = 2000
+TAG_IMAGE_WIDTH_MAX = 2000
+TAG_IMAGE_SIZE_MAX = 15  # in MB
+TAG_IMAGE_HEIGHT_MIN = 128
+TAG_IMAGE_WIDTH_MIN = 128
+
+TAG_TITLE_LENGTH_MAX = 100
 # The default should be in index 0
 POSITION_CHOICES = [('us', 'User'), ('ad', 'Admin'), ('au', 'Author'), ('su', 'Superuser')]

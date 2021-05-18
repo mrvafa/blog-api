@@ -12,5 +12,6 @@ urlpatterns = [
                           name='account_email_verification_sent'),
                   re_path(r'^account-confirm-email/(?P<key>[-:\w]+)/$', VerifyEmailView.as_view(),
                           name='account_confirm_email'),
+                  path('ckeditor/', include('ckeditor_uploader.urls')),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
