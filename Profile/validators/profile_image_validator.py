@@ -2,11 +2,14 @@ import filetype
 from PIL import Image
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 def profile_image_validate(image):
+    if type(image) is InMemoryUploadedFile:
+        return
     kind = filetype.guess(image)
-    if not kind.extension and kind.extension not in settings.PROFILE_ALLOWED_IMAGE_EXTENSIONS:
+    if not kind or kind.extension not in settings.PROFILE_ALLOWED_IMAGE_EXTENSIONS:
         raise ValidationError(
             settings.ERROR_MESSAGES['PROFILE_IMAGE_FORMAT_INVALID']
         )

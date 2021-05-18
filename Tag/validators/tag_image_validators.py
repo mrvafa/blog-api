@@ -1,12 +1,15 @@
 import PIL.Image
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from filetype import filetype
 
 
 def tag_image_validate(image):
+    if type(image) is InMemoryUploadedFile:
+        return
     kind = filetype.guess(image)
-    if not kind.extension and kind.extension not in settings.TAG_ALLOWED_IMAGE_EXTENSIONS:
+    if not kind or kind.extension not in settings.TAG_ALLOWED_IMAGE_EXTENSIONS:
         raise ValidationError(
             settings.ERROR_MESSAGES['TAG_IMAGE_FORMAT_INVALID']
         )
