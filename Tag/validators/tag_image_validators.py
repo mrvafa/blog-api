@@ -6,7 +6,7 @@ from filetype import filetype
 
 
 def tag_image_validate(image):
-    if type(image) is InMemoryUploadedFile:
+    if type(image) is not InMemoryUploadedFile:
         return
     kind = filetype.guess(image)
     if not kind or kind.extension not in settings.TAG_ALLOWED_IMAGE_EXTENSIONS:
