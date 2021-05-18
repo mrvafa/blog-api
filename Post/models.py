@@ -10,7 +10,7 @@ from Tag.models import Tag
 class Post(models.Model):
     title = models.CharField(max_length=settings.POST_TITLE_LENGTH_MAX, unique=True, db_index=True)
     slug = models.CharField(max_length=settings.POST_TITLE_LENGTH_MAX, unique=True, editable=False)
-    image = models.ImageField(upload_to='post/%d', validators=[post_image_validate], )
+    image = models.ImageField(upload_to='post/%m', validators=[post_image_validate], )
     body = RichTextUploadingField()
     added_datetime = models.DateTimeField(auto_created=True, blank=True, null=True, )
     modify_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True, )
