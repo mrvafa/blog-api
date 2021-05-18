@@ -12,8 +12,8 @@ class Post(models.Model):
     slug = models.CharField(max_length=settings.POST_TITLE_LENGTH_MAX, unique=True, editable=False)
     image = models.ImageField(upload_to='post/%m', validators=[post_image_validate], )
     body = RichTextUploadingField()
-    added_datetime = models.DateTimeField(auto_created=True, blank=True, null=True, )
-    modify_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True, )
+    added_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True, )
+    modify_datetime = models.DateTimeField(auto_now=True, blank=True, null=True, )
     tags = models.ManyToManyField(Tag, blank=True, )
 
     def clean(self, *args, **kwargs):

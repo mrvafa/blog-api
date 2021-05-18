@@ -11,8 +11,8 @@ class Tag(models.Model):
     slug = models.CharField(max_length=settings.TAG_TITLE_LENGTH_MAX, unique=True, editable=False)
     image = models.ImageField(upload_to='tag/%m', validators=[tag_image_validate,], blank=True, null=True, )
     body = RichTextUploadingField(blank=True, null=True)
-    added_datetime = models.DateTimeField(auto_created=True, blank=True, null=True, )
-    modify_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True, )
+    added_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True, )
+    modify_datetime = models.DateTimeField(auto_now=True, blank=True, null=True, )
 
     def clean(self, *args, **kwargs):
         self.title = self.title.strip()
