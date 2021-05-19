@@ -1,11 +1,11 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import (ListAPIView, RetrieveAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView,
-                                     CreateAPIView)
+                                     CreateAPIView, GenericAPIView)
 from rest_framework.permissions import IsAdminUser, AllowAny
 
 from Tag.models import Tag
-from .TagSerializer import TagSerializer
+from .TagSerializer import TagSerializer, UpdateTagSerializer, RemoveTagImageSerializer
 from .pagination import TagPageNumberPagination
 
 
@@ -32,7 +32,7 @@ class TagDetailAPIView(RetrieveAPIView):
 # update obj
 class TagUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Tag.objects.all()
-    serializer_class = TagSerializer
+    serializer_class = UpdateTagSerializer
     permission_classes = (IsAdminUser,)
     authentication_classes = (TokenAuthentication,)
 
@@ -51,3 +51,11 @@ class TagCreateAPIView(CreateAPIView):
     serializer_class = TagSerializer
     permission_classes = (IsAdminUser,)
     authentication_classes = (TokenAuthentication,)
+
+
+class TagRemoveImage(RetrieveUpdateAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = RemoveTagImageSerializer
+    permission_classes = (IsAdminUser,)
+    authentication_classes = (TokenAuthentication,)
+

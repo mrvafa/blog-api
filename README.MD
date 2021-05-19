@@ -36,4 +36,6 @@ Not ready!!
 - [X] Create post app and model.
 - [X] Create API for post (list, single, add, edit and remove).
 - [X] Create API for tag (list, single, add, edit and remove).
-- [ ] Customize API for editing post and tag. (Change post's and tag's image, and remove tag's image.) 
+- [X] Customize API for editing post and tag. (Change post's and tag's image, and remove tag's image.) 
+- [ ] Add user to post's model and add to API.
+- [ ] Create custom authorization AllowAuthor.

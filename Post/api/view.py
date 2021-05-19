@@ -5,7 +5,7 @@ from rest_framework.generics import (ListAPIView, RetrieveAPIView, RetrieveUpdat
 from rest_framework.permissions import IsAdminUser, AllowAny
 
 from Post.models import Post
-from .PostSerializer import PostSerializer
+from .PostSerializer import PostSerializer, UpdatePostSerializer
 from .pagination import PostPageNumberPagination
 
 
@@ -32,7 +32,7 @@ class PostDetailAPIView(RetrieveAPIView):
 # update obj
 class PostUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostSerializer
+    serializer_class = UpdatePostSerializer
     permission_classes = (IsAdminUser,)
     authentication_classes = (TokenAuthentication,)
 
