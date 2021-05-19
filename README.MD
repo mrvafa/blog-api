@@ -38,4 +38,4 @@ Not ready!!
 - [X] Create API for tag (list, single, add, edit and remove).
 - [X] Customize API for editing post and tag. (Change post's and tag's image, and remove tag's image.) 
 - [X] Add user to post's model and add to API.
-- [ ] Create custom authorization AllowAuthor.
+- [X] Create custom authorization AllowAuthor.
