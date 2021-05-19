@@ -1,5 +1,6 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
 
@@ -8,6 +9,7 @@ from Tag.models import Tag
 
 
 class Post(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
     title = models.CharField(max_length=settings.POST_TITLE_LENGTH_MAX, unique=True, db_index=True)
     slug = models.CharField(max_length=settings.POST_TITLE_LENGTH_MAX, unique=True, editable=False)
     image = models.ImageField(upload_to='post/%m', validators=[post_image_validate], )
