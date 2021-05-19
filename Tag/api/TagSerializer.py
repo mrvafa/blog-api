@@ -11,12 +11,20 @@ class TagSerializer(ModelSerializer):
 
 class UpdateTagSerializer(ModelSerializer):
     def __init__(self, *args, **kwargs):
-        if args and args[0] and args[0].image and not kwargs.get('data').get('image'):
-            kwargs['data']['image'] = args[0].image
-        if args and args[0] and args[0].title and not kwargs.get('data').get('title'):
-            kwargs['data']['title'] = args[0].title
-        if args and args[0] and args[0].body and not kwargs.get('data').get('body'):
-            kwargs['data']['body'] = args[0].body
+        if kwargs and 'data' in kwargs and kwargs['data']:
+            # remember old state
+            _mutable = kwargs['data']._mutable
+            # set to mutable
+            kwargs['data']._mutable = True
+
+            if args and args[0] and args[0].image and not kwargs.get('data').get('image'):
+                kwargs['data']['image'] = args[0].image
+            if args and args[0] and args[0].title and not kwargs.get('data').get('title'):
+                kwargs['data']['title'] = args[0].title
+            if args and args[0] and args[0].body and not kwargs.get('data').get('body'):
+                kwargs['data']['body'] = args[0].body
+
+            kwargs['data']._mutable = _mutable
         super(UpdateTagSerializer, self).__init__(*args, **kwargs)
 
     class Meta:
