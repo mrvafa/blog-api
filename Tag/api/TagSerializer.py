@@ -6,13 +6,13 @@ from Tag.models import Tag
 class TagSerializer(ModelSerializer):
     class Meta:
         model = Tag
-        fields = '__all__'
+        fields = ('title', 'image', 'body')
 
 
 class UpdateTagSerializer(ModelSerializer):
     class Meta:
         model = Tag
-        fields = '__all__'
+        fields = ('title', 'image', 'body')
 
 
 class RemoveTagImageSerializer(UpdateTagSerializer):

@@ -1,6 +1,6 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.generics import (ListAPIView, RetrieveAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView,
+from rest_framework.generics import (ListAPIView, RetrieveAPIView, RetrieveDestroyAPIView,
                                      CreateAPIView)
 from rest_framework.permissions import IsAdminUser, AllowAny
 
@@ -55,7 +55,7 @@ class TagCreateAPIView(CreateAPIView):
     authentication_classes = (TokenAuthentication,)
 
 
-class TagRemoveImage(RetrieveUpdateAPIView):
+class TagRemoveImage(RetrieveUpdateBlankUseDefaultAPIView):
     queryset = Tag.objects.all()
     serializer_class = RemoveTagImageSerializer
     permission_classes = (IsAuthor,)
