@@ -40,5 +40,5 @@ Not ready!!
 - [X] Add user to post's model and add to API.
 - [X] Create custom authorization AllowAuthor.
 - [X] Override RetrieveUpdateAPIView for use previous data if edit data is empty.
-- [ ] Create position and post, many to many fields.  
+- [X] Create position and post, many to many fields.  
 - [ ] Create Profile API.

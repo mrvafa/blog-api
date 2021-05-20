@@ -11,6 +11,19 @@ from Profile.validators.phone_number_validators import iran_phone_validate
 from Profile.validators.profile_image_validator import profile_image_validate
 
 
+class Position(models.Model):
+    position = models.CharField(max_length=100, unique=True, primary_key=True, )
+
+    def __str__(self):
+        return self.position
+
+    @staticmethod
+    def create_positions():
+        for position in settings.POSITION_CHOICES:
+            if not Position.objects.filter(position=position):
+                Position.objects.create(position=position).save()
+
+
 class Profile(models.Model):
     # django user model has first_name, last_name, email, joined_time and password
     user = models.OneToOneField(
@@ -45,11 +58,14 @@ class Profile(models.Model):
         upload_to='profile_images/%m',
         validators=[profile_image_validate]
     )
-    position = models.CharField(
-        choices=settings.POSITION_CHOICES,
-        default=settings.POSITION_CHOICES[0][0],
-        max_length=max(len(p[0]) for p in settings.POSITION_CHOICES),
+
+    positions = models.ManyToManyField(
+        Position,
+        blank=True,
     )
+
+    def get_positions(self):
+        return " ".join([str(pos) for pos in self.positions.all()])
 
     def __str__(self):
         return self.user.username
@@ -57,6 +73,15 @@ class Profile(models.Model):
     def clean(self, *args, **kwargs):
         if self.phone_number and self.phone_number.startswith('0'):
             self.phone_number = '+98' + self.phone_number[1:]
+        if 'admin' in self.get_positions().split(' '):
+            self.user.is_staff = True
+            self.user.save()
+        if 'superuser' in self.get_positions().split(' '):
+            self.user.is_superuser = True
+            self.user.is_staff = True
+            self.user.save()
+        if not self.phone_number:
+            self.phone_number = None
         super(Profile, self).clean()
 
     def save(self, *args, **kwargs):

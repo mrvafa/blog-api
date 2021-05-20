@@ -27,5 +27,5 @@ POST_IMAGE_SIZE_MAX = 15  # in MB
 POST_IMAGE_HEIGHT_MIN = 128
 POST_IMAGE_WIDTH_MIN = 128
 
-# The default should be in index 0
-POSITION_CHOICES = [('us', 'User'), ('ad', 'Admin'), ('au', 'Author'), ('su', 'Superuser')]
+# The attributes should not have space (use dash only).
+POSITION_CHOICES = ['user', 'admin', 'author', 'superuser']
