@@ -4,6 +4,7 @@ from rest_framework.generics import (ListAPIView, RetrieveAPIView, RetrieveUpdat
                                      CreateAPIView)
 from rest_framework.permissions import IsAdminUser, AllowAny
 
+from APIViews.CustomRetrieveUpdateAPIView import RetrieveUpdateBlankUseDefaultAPIView
 from Authorizations.Authorization import IsAuthor
 from Tag.models import Tag
 from .TagSerializer import TagSerializer, UpdateTagSerializer, RemoveTagImageSerializer
@@ -31,7 +32,7 @@ class TagDetailAPIView(RetrieveAPIView):
 
 
 # update obj
-class TagUpdateAPIView(RetrieveUpdateAPIView):
+class TagUpdateAPIView(RetrieveUpdateBlankUseDefaultAPIView):
     queryset = Tag.objects.all()
     serializer_class = UpdateTagSerializer
     permission_classes = (IsAuthor,)

@@ -1,11 +1,12 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.generics import (ListAPIView, RetrieveAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView,
+from rest_framework.generics import (ListAPIView, RetrieveAPIView, RetrieveDestroyAPIView,
                                      CreateAPIView)
 from rest_framework.permissions import AllowAny
 
 from Authorizations.Authorization import IsAuthorOfThisPost, IsAuthor, IsAdminOrAuthorOfThisPost
 from Post.models import Post
+from APIViews.CustomRetrieveUpdateAPIView import RetrieveUpdateBlankUseDefaultAPIView
 from .PostSerializer import PostSerializer, UpdatePostSerializer, CreatePostSerializer
 from .pagination import PostPageNumberPagination
 
@@ -31,7 +32,7 @@ class PostDetailAPIView(RetrieveAPIView):
 
 
 # update obj
-class PostUpdateAPIView(RetrieveUpdateAPIView):
+class PostUpdateAPIView(RetrieveUpdateBlankUseDefaultAPIView):
     queryset = Post.objects.all()
     serializer_class = UpdatePostSerializer
     permission_classes = (IsAuthorOfThisPost,)
