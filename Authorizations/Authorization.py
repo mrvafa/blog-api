@@ -28,6 +28,6 @@ class IsAuthor(BasePermission):
 class IsAdminOrAuthorOfThisPost(BasePermission):
     def has_permission(self, request, view):
         is_author_of_this_post = IsAuthorOfThisPost().has_permission(request, view)
-        is_author = IsAdminOrAuthorOfThisPost().has_permission(request, view)
+        is_author = IsAuthor().has_permission(request, view)
 
         return bool(is_author or is_author_of_this_post)
