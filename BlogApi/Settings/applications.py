@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
 
-    'Profile.apps.ProfileConfig',
     'Tag.apps.TagConfig',
     'Post.apps.PostConfig',
+    'MyUser.apps.MyuserConfig',
 ]

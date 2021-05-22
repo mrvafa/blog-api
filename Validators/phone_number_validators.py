@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 
 from BlogApi.Settings.messages import ERROR_MESSAGES
-from Profile.validators.collectins import pattern_validation
+from Validators.collectins import pattern_validation
 
 
 def iran_phone_validate(value):
