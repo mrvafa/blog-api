@@ -42,4 +42,4 @@ Not ready!!
 - [X] Override RetrieveUpdateAPIView for use previous data if edit data is empty.
 - [X] Create position and post, many to many fields.
 - [X] Merged User and Profile.
-- [ ] Create Profile API.
+- [X] Create Profile API.

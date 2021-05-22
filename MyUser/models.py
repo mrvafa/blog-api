@@ -19,7 +19,7 @@ class User(AbstractUser):
         null=True,
         validators=[age_min_validator, age_max_validator]
     )
-    phone_number = models.TextField(
+    phone_number = models.CharField(
         blank=True,
         null=True,
         max_length=settings.PHONE_NUMBER_MAX_LENGTH,

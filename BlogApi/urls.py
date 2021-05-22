@@ -16,5 +16,6 @@ urlpatterns = [
 
                   path('post/', include('Post.urls')),
                   path('tag/', include('Tag.urls')),
+                  path('profile/', include('MyUser.urls')),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
