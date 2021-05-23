@@ -10,7 +10,7 @@ class IsAuthorOfThisPost(BasePermission):
             return False
         return bool(
             Post.objects.filter(id=view.kwargs['pk']).first() and  # Post exists
-            request.user.has_perm('add_post') and  # Is author
+            request.user.has_perm('Post.add_post') and  # Is author
             request.user == Post.objects.filter(  # Is Author of this post
                 id=view.kwargs['pk']).first().author
         )
@@ -21,7 +21,7 @@ class IsAuthor(BasePermission):
         if not request.user or isinstance(request.user, AnonymousUser):
             return False
         return bool(
-            request.user.has_perm('add_post')
+            request.user.has_perm('Post.add_post')
         )
 
 
