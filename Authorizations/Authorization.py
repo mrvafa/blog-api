@@ -31,3 +31,8 @@ class IsAdminOrAuthorOfThisPost(BasePermission):
         is_author = IsAuthor().has_permission(request, view)
 
         return bool(is_author or is_author_of_this_post)
+
+
+class IsSuperUser(BasePermission):
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_superuser)

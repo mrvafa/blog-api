@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .view import UserListAPIView, UserDetailAPIView, UserDestroyAPIView, UserEditOwnAPIView, UserDestroyOwnAPIView
+from .view import (UserListAPIView, UserDetailAPIView, UserDestroyAPIView, UserEditOwnAPIView, UserDestroyOwnAPIView,
+                   UserAuthor, MakeUserAdmin)
 
 urlpatterns = [
     path('api/', UserListAPIView.as_view(), name='user_list'),
@@ -9,4 +10,7 @@ urlpatterns = [
 
     path('api/edit-account/', UserEditOwnAPIView.as_view(), name='edit_account'),
     path('api/delete-account/', UserDestroyOwnAPIView.as_view(), name='delete_account'),
+
+    path('api/<int:pk>/make-user-author/', UserAuthor.as_view(), name='make_user_author'),
+    path('api/<int:pk>/make-user-admin/', MakeUserAdmin.as_view(), name='make_user_admin'),
 ]

@@ -35,5 +35,8 @@ class User(AbstractUser):
         validators=[profile_image_validate]
     )
 
+    def is_author(self):
+        return self.has_perm('Post.add_post')
+
     def __str__(self):
         return self.username
