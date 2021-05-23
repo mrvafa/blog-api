@@ -45,3 +45,13 @@ Not ready!!
 - [X] Create Profile API.
 - [X] Create API for user to make user admin, author, non-admin, non-author and deactivate-user.
 - [X] Create custom permission for post (is_author)
+- [ ] Tests
+- [ ] Finishing version 1.0
+- [ ] Add likes, read_later, views, read
+- [ ] Add read time estimate.
+- [ ] Add comments (self-relation)
+- [ ] Add message (contains text, sender, receiver, time, read?)
+- [ ] Block user  
+- [ ] Follow user
+- [ ] Resend email
+- [ ] Captcha
