@@ -44,5 +44,4 @@ Not ready!!
 - [X] Merged User and Profile.
 - [X] Create Profile API.
 - [X] Create API for user to make user admin, author, non-admin, non-author and deactivate-user.
-- [ ] Create custom permission for post (is_author)
-- [ ] Show text is_author instead of permission id 
+- [X] Create custom permission for post (is_author)

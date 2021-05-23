@@ -36,7 +36,7 @@ class User(AbstractUser):
     )
 
     def is_author(self):
-        return self.has_perm('Post.add_post')
+        return self.has_perm('Post.is_author')
 
     def __str__(self):
         return self.username

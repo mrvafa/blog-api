@@ -71,7 +71,7 @@ class UserAuthor(RetrieveUpdateAPIView):
     def put(self, request, *args, **kwargs):
         user = User.objects.get(id=kwargs['pk'])
         if 'is_author' in request.data:
-            permission = Permission.objects.get(codename='add_post')
+            permission = Permission.objects.get(codename='is_author')
             if request.data['is_author'] == 'true':
                 user.user_permissions.add(permission)
             else:
@@ -87,6 +87,6 @@ class MakeUserAdmin(RetrieveUpdateAPIView):
 
     def put(self, request, *args, **kwargs):
         user = User.objects.filter(id=kwargs['pk']).first()
-        permission = Permission.objects.filter(codename='add_post').first()
+        permission = Permission.objects.get(codename='is_author')
         user.user_permissions.add(permission)
         return super(MakeUserAdmin, self).put(request, args, kwargs)

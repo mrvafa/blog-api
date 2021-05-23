@@ -17,6 +17,11 @@ class Post(models.Model):
     modify_datetime = models.DateTimeField(auto_now=True, blank=True, null=True, )
     tags = models.ManyToManyField(Tag, blank=True, )
 
+    class Meta:
+        permissions = [
+            ('is_author', 'Can create, edit and delete own post using API.'),
+        ]
+
     def clean(self, *args, **kwargs):
         self.title = self.title.strip()
         self.slug = slugify(self.title, allow_unicode=True, )
