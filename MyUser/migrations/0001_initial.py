@@ -2,7 +2,7 @@
 
 import Validators.birthday_validators
 import Validators.phone_number_validators
-import Validators.profile_image_validator
+import Validators.image_validators
 import django.contrib.auth.models
 import django.contrib.auth.validators
 from django.db import migrations, models
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('birthday', models.DateField(blank=True, null=True, validators=[Validators.birthday_validators.age_min_validator, Validators.birthday_validators.age_max_validator])),
                 ('phone_number', models.CharField(blank=True, max_length=13, null=True, unique=True, validators=[Validators.phone_number_validators.iran_phone_validate])),
                 ('phone_number_verified', models.BooleanField(default=False, editable=False)),
-                ('image', models.ImageField(blank=True, null=True, upload_to='profile_images/%m', validators=[Validators.profile_image_validator.profile_image_validate])),
+                ('image', models.ImageField(blank=True, null=True, upload_to='profile_images/%m', validators=[Validators.image_validators.profile_image_validate])),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),
             ],

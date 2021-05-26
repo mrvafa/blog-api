@@ -3,8 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from Validators.birthday_validators import age_min_validator, age_max_validator
+from Validators.image_validators import profile_image_validate
 from Validators.phone_number_validators import iran_phone_validate
-from Validators.profile_image_validator import profile_image_validate
 
 
 class User(AbstractUser):
