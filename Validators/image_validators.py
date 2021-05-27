@@ -93,3 +93,22 @@ def profile_image_validate(image):
 
     if error_messages:
         raise ValidationError(error_messages)
+
+
+def tag_image_validate(image):
+    errors = _check_min_max_width_length_size_image_extensions(
+        image=image,
+        allowed_extensions=settings.TAG_ALLOWED_IMAGE_EXTENSIONS,
+        width_max=settings.TAG_IMAGE_WIDTH_MAX,
+        width_min=settings.TAG_IMAGE_WIDTH_MIN,
+        height_max=settings.TAG_IMAGE_HEIGHT_MAX,
+        height_min=settings.TAG_IMAGE_HEIGHT_MIN,
+        size_max=settings.TAG_IMAGE_SIZE_MAX,
+    )
+    error_messages = []
+    for key in errors:
+        if errors[key]:
+            error_messages.append(settings.ERROR_MESSAGES[f'TAG_IMAGE_{key.upper()}'])
+
+    if error_messages:
+        raise ValidationError(error_messages)
