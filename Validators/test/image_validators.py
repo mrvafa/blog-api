@@ -90,7 +90,7 @@ class TestImagePropertiesValidator(TestCase):
         self.assertFalse(_is_allowed_extension(image, ['png']))
 
 
-class TestImageValidator(TestCase):
+class TestProfileImageValidator(TestCase):
     def test_ok_profile_image(self):
         image_content = requests.get(
             f'https://picsum.photos/{settings.PROFILE_IMAGE_WIDTH_MIN}/{settings.PROFILE_IMAGE_HEIGHT_MIN}').content
@@ -168,7 +168,7 @@ class TestImageValidator(TestCase):
             content=image_content,
         )
         # for debugging
-        list_of_allowed_extension, settings.PROFILE_ALLOWED_IMAGE_EXTENSIONS = settings.PROFILE_IMAGE_SIZE_MAX, ['png']
+        list_of_allowed_extension, settings.PROFILE_IMAGE_ALLOWED_EXTENSIONS = settings.PROFILE_IMAGE_SIZE_MAX, ['png']
         with self.assertRaises(ValidationError):
             profile_image_validate(image)
         settings.PROFILE_IMAGE_SIZE_MAX = list_of_allowed_extension

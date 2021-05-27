@@ -1,8 +1,7 @@
 import filetype
 from PIL import Image
-from django.core.exceptions import ValidationError
 from django.conf import settings
-from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.exceptions import ValidationError
 
 
 def _is_allowed_extension(image, valid_extensions):
@@ -36,42 +35,61 @@ def _is_image_size_is_less_than_or_equal(image, size_in_megabyte):
     return image.size / (1024 ** 2) <= size_in_megabyte
 
 
-def profile_image_validate(image):
-    # if type(image) is not InMemoryUploadedFile:
-    #     return
-    if not _is_allowed_extension(image, settings.PROFILE_ALLOWED_IMAGE_EXTENSIONS):
-        raise ValidationError(
-            settings.ERROR_MESSAGES['PROFILE_IMAGE_FORMAT_INVALID']
-        )
-
-    errors = []
+def _check_min_max_width_length_size_image_extensions(
+        image,
+        width_max,
+        height_max,
+        width_min,
+        height_min,
+        size_max,
+        allowed_extensions,
+):
+    errors = {
+        'width_max': False,
+        'height_max': False,
+        'width_min': False,
+        'height_min': False,
+        'size_max': False,
+        'image_extensions': False,
+        'size_min': False,
+    }
+    if not _is_allowed_extension(image, allowed_extensions):
+        errors['allowed_extensions'] = True
+        return errors
 
     im = Image.open(image)
+    if not _is_image_width_less_than_or_equal(im, width_max):
+        errors['width_max'] = True
 
-    if not _is_image_width_less_than_or_equal(im, settings.PROFILE_IMAGE_WIDTH_MAX):
-        errors.append(
-            settings.ERROR_MESSAGES['PROFILE_IMAGE_WIDTH_MAX']
-        )
+    elif not _is_image_width_more_than_or_equal(im, width_min):
+        errors['width_min'] = True
 
-    elif not _is_image_width_more_than_or_equal(im, settings.PROFILE_IMAGE_WIDTH_MIN):
-        errors.append(
-            settings.ERROR_MESSAGES['PROFILE_IMAGE_WIDTH_MIN']
-        )
+    if not _is_image_height_less_than_or_equal(im, height_max):
+        errors['height_max'] = True
 
-    if not _is_image_height_less_than_or_equal(im, settings.PROFILE_IMAGE_HEIGHT_MAX):
-        errors.append(
-            settings.ERROR_MESSAGES['PROFILE_IMAGE_HEIGHT_MAX']
-        )
+    elif not _is_image_height_more_than_or_equal(im, height_min):
+        errors['height_min'] = True
 
-    elif not _is_image_height_more_than_or_equal(im, settings.PROFILE_IMAGE_HEIGHT_MIN):
-        errors.append(
-            settings.ERROR_MESSAGES['PROFILE_IMAGE_HEIGHT_MIN']
-        )
+    if not _is_image_size_is_less_than_or_equal(image, size_max):
+        errors['size_max'] = True
 
-    if not _is_image_size_is_less_than_or_equal(image, settings.PROFILE_IMAGE_SIZE_MAX):
-        errors.append(
-            settings.ERROR_MESSAGES['PROFILE_IMAGE_SIZE_MAX']
-        )
+    return errors
 
-    if errors:
-        raise ValidationError(errors)
+
+def profile_image_validate(image):
+    errors = _check_min_max_width_length_size_image_extensions(
+        image=image,
+        allowed_extensions=settings.PROFILE_IMAGE_ALLOWED_EXTENSIONS,
+        width_max=settings.PROFILE_IMAGE_WIDTH_MAX,
+        width_min=settings.PROFILE_IMAGE_WIDTH_MIN,
+        height_max=settings.PROFILE_IMAGE_HEIGHT_MAX,
+        height_min=settings.PROFILE_IMAGE_HEIGHT_MIN,
+        size_max=settings.PROFILE_IMAGE_SIZE_MAX,
+    )
+    error_messages = []
+    for key in errors:
+        if errors[key]:
+            error_messages.append(settings.ERROR_MESSAGES[f'PROFILE_IMAGE_{key.upper()}'])
+
+    if error_messages:
+        raise ValidationError(error_messages)
