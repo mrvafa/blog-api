@@ -12,8 +12,8 @@ ERROR_MESSAGES = {
     'PROFILE_IMAGE_WIDTH_MIN': f'Min profile image width length is {settings.PROFILE_IMAGE_WIDTH_MIN}',
     'PROFILE_IMAGE_HEIGHT_MIN': f'Min profile image height is {settings.PROFILE_IMAGE_HEIGHT_MIN}',
 
-    'TAG_IMAGE_FORMAT_INVALID':
-        f'Please select an image format (valid formats are {settings.TAG_ALLOWED_IMAGE_EXTENSIONS}).',
+    'TAG_IMAGE_ALLOWED_EXTENSIONS':
+        f'Please select an image format (valid formats are {settings.TAG_IMAGE_ALLOWED_EXTENSIONS}).',
     'TAG_IMAGE_WIDTH_MAX': f'Max tag image width length is {settings.TAG_IMAGE_WIDTH_MAX}',
     'TAG_IMAGE_HEIGHT_MAX': f'Max tag image height is {settings.TAG_IMAGE_HEIGHT_MAX}',
     'TAG_IMAGE_SIZE_MAX': f'Max tag image size length is {settings.TAG_IMAGE_SIZE_MAX}',

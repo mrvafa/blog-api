@@ -9,7 +9,7 @@ from django.test import TestCase
 
 from Validators.image_validators import _is_image_width_less_than_or_equal, _is_image_height_less_than_or_equal, \
     _is_image_width_more_than_or_equal, _is_image_height_more_than_or_equal, _is_image_size_is_less_than_or_equal, \
-    _is_allowed_extension, profile_image_validate
+    _is_allowed_extension, profile_image_validate, tag_image_validate
 
 
 class TestImagePropertiesValidator(TestCase):
@@ -172,3 +172,88 @@ class TestProfileImageValidator(TestCase):
         with self.assertRaises(ValidationError):
             profile_image_validate(image)
         settings.PROFILE_IMAGE_SIZE_MAX = list_of_allowed_extension
+
+
+class TestTagImageValidator(TestCase):
+    def test_ok_tag_image(self):
+        image_content = requests.get(
+            f'https://picsum.photos/{settings.PROFILE_IMAGE_WIDTH_MIN}/{settings.TAG_IMAGE_HEIGHT_MIN}').content
+        image = SimpleUploadedFile(
+            name='test_image',
+            content_type='image/jpeg',
+            content=image_content,
+        )
+        self.assertIsNone(tag_image_validate(image))
+
+    def test_wrong_max_width_tag_image(self):
+        image_content = requests.get(f'https://picsum.photos/{settings.TAG_IMAGE_WIDTH_MAX * 2}/'
+                                     f'{settings.TAG_IMAGE_HEIGHT_MIN}').content
+        image = SimpleUploadedFile(
+            name='test_image',
+            content_type='image/jpeg',
+            content=image_content,
+        )
+        with self.assertRaises(ValidationError):
+            tag_image_validate(image)
+
+    def test_wrong_max_height_tag_image(self):
+        image_content = requests.get(f'https://picsum.photos/{settings.TAG_IMAGE_WIDTH_MIN}/'
+                                     f'{settings.TAG_IMAGE_HEIGHT_MAX * 2}').content
+        image = SimpleUploadedFile(
+            name='test_image',
+            content_type='image/jpeg',
+            content=image_content,
+        )
+        with self.assertRaises(ValidationError):
+            tag_image_validate(image)
+
+    def test_wrong_min_width_tag_image(self):
+        image_content = requests.get(f'https://picsum.photos/{settings.TAG_IMAGE_WIDTH_MIN // 2}/'
+                                     f'{settings.TAG_IMAGE_HEIGHT_MIN}').content
+        image = SimpleUploadedFile(
+            name='test_image',
+            content_type='image/jpeg',
+            content=image_content,
+        )
+        with self.assertRaises(ValidationError):
+            tag_image_validate(image)
+
+    def test_wrong_min_height_tag_image(self):
+        image_content = requests.get(f'https://picsum.photos/{settings.TAG_IMAGE_WIDTH_MIN}/'
+                                     f'{settings.TAG_IMAGE_HEIGHT_MIN // 2}').content
+        image = SimpleUploadedFile(
+            name='test_image',
+            content_type='image/jpeg',
+            content=image_content,
+        )
+        with self.assertRaises(ValidationError):
+            tag_image_validate(image)
+
+    def test_wrong_size_tag_image(self):
+        image_content = requests.get(
+            f'https://picsum.photos/{settings.TAG_IMAGE_WIDTH_MIN}/{settings.TAG_IMAGE_HEIGHT_MIN}').content
+        image = SimpleUploadedFile(
+            name='test_image',
+            content_type='image/jpeg',
+            content=image_content,
+        )
+        # for debugging
+        tmp_image_max_size, settings.TAG_IMAGE_SIZE_MAX = settings.TAG_IMAGE_SIZE_MAX, 0
+        with self.assertRaises(ValidationError):
+            tag_image_validate(image)
+        settings.TAG_IMAGE_SIZE_MAX = tmp_image_max_size
+
+    def test_wrong_extension_tag_image(self):
+        image_content = requests.get(
+            f'https://picsum.photos/{settings.TAG_IMAGE_WIDTH_MIN}/{settings.TAG_IMAGE_HEIGHT_MIN}').content
+        image = SimpleUploadedFile(
+            name='test_image',
+            content_type='image/jpeg',
+            content=image_content,
+        )
+        # for debugging
+        list_of_allowed_extension, settings.TAG_IMAGE_ALLOWED_EXTENSIONS = settings.TAG_IMAGE_ALLOWED_EXTENSIONS, [
+            'png']
+        with self.assertRaises(ValidationError):
+            tag_image_validate(image)
+        settings.TAG_IMAGE_ALLOWED_EXTENSIONS = list_of_allowed_extension

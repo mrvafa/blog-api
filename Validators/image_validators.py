@@ -98,7 +98,7 @@ def profile_image_validate(image):
 def tag_image_validate(image):
     errors = _check_min_max_width_length_size_image_extensions(
         image=image,
-        allowed_extensions=settings.TAG_ALLOWED_IMAGE_EXTENSIONS,
+        allowed_extensions=settings.TAG_IMAGE_ALLOWED_EXTENSIONS,
         width_max=settings.TAG_IMAGE_WIDTH_MAX,
         width_min=settings.TAG_IMAGE_WIDTH_MIN,
         height_max=settings.TAG_IMAGE_HEIGHT_MAX,
