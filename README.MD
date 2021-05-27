@@ -49,7 +49,7 @@ Not ready!!
 - [ ] Finishing version 1.0
 - [ ] Add likes, read_later, views, read
 - [ ] Add read time estimate.
-- [ ] Add comments (self-relation)
+- [ ] Add comments (self-relation, like and dislike)
 - [ ] Add message (contains text, sender, receiver, time, read?)
 - [ ] Block user  
 - [ ] Follow user
