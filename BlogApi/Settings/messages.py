@@ -4,6 +4,7 @@ ERROR_MESSAGES = {
     'AGE_MIN': f'Your age should be at last {settings.AGE_MIN}',
     'AGE_MAX': f'Your age should be at most {settings.AGE_MAX}',
     'WRONG_IRAN_PHONE_NUMBER': 'Please input correct iran phone number format',
+    'NON_AUTHOR_USER': 'User should have author permission.',
     'PROFILE_IMAGE_ALLOWED_EXTENSIONS':
         f'Please select an image format (valid formats are {settings.PROFILE_IMAGE_ALLOWED_EXTENSIONS}).',
     'PROFILE_IMAGE_WIDTH_MAX': f'Max profile image width length is {settings.PROFILE_IMAGE_WIDTH_MAX}',

@@ -1,5 +1,6 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 
@@ -25,6 +26,8 @@ class Post(models.Model):
     def clean(self, *args, **kwargs):
         self.title = self.title.strip()
         self.slug = slugify(self.title, allow_unicode=True, )
+        if not self.author.has_perm('Post.is_author'):
+            raise ValidationError(settings.ERROR_MESSAGES['NON_AUTHOR_USER'])
         super(Post, self).clean()
 
     def save(self, *args, **kwargs):
