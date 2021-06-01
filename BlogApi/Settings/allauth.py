@@ -58,7 +58,6 @@ When set to “mandatory” the user is blocked from logging in until the email 
 or “none” to allow logins with an unverified e-mail address. In case of “optional”, the e-mail verification mail 
 is still sent, whereas in case of “none” no e-mail verification mails are sent.
 """
-# TODO: uncomment line bellow
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 """
