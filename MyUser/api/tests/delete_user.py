@@ -45,3 +45,15 @@ class TestDeleteUser(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
         respond = self.client.delete(reverse('user_destroy', args=(3,)))
         self.assertEqual(403, respond.status_code)
+
+    def test_ok_delete_own_account_check_status_code(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
+        respond = self.client.get(reverse('delete_account'))
+        self.assertEqual(200, respond.status_code)
+        respond = self.client.delete(reverse('delete_account'))
+        self.assertEqual(204, respond.status_code)
+
+    def test_ok_delete_own_account_check_db(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
+        self.client.delete(reverse('delete_account'))
+        self.assertIsNone(User.objects.filter(username='mrvafa').first())
