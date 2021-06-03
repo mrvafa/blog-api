@@ -44,3 +44,8 @@ class TestListOfUsers(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
         respond = self.client.get(reverse('user_detail', args=(3,)))
         self.assertEqual(403, respond.status_code)
+
+    def test_wrong_edit_user(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
+        respond = self.client.put(reverse('user_detail', args=(1,)), data={'first_name': 'name'})
+        self.assertEqual(405, respond.status_code)
