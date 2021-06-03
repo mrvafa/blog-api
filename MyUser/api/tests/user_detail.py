@@ -27,7 +27,7 @@ class TestListOfUsers(TestCase):
 
     def test_ok_detail_of_user(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
-        respond = self.client.get(reverse('user_detail'), pk=1)
+        respond = self.client.get(reverse('user_detail', args=(1,)))
         self.assertEqual(200, respond.status_code)
 
     def test_ok_detail_of_user_check_ordering(self):
@@ -42,5 +42,5 @@ class TestListOfUsers(TestCase):
 
     def test_wrong_detail_of_user_non_superuser_token(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
-        respond = self.client.get(reverse('user_detail', args=(3, )))
+        respond = self.client.get(reverse('user_detail', args=(3,)))
         self.assertEqual(403, respond.status_code)
