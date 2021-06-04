@@ -16,7 +16,6 @@ class TagListAPIView(ListAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (AllowAny,)
-    # authentication_classes = (TokenAuthentication,)
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('title', 'body')
     pagination_class = TagPageNumberPagination
@@ -28,7 +27,6 @@ class TagDetailAPIView(RetrieveAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (AllowAny,)
-    # authentication_classes = (TokenAuthentication,)
 
 
 # update obj
