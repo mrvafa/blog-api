@@ -26,6 +26,7 @@ class TagListAPIView(ListAPIView):
 class TagDetailAPIView(RetrieveAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+    lookup_field = 'slug'
     permission_classes = (AllowAny,)
 
 
@@ -34,6 +35,7 @@ class TagUpdateAPIView(RetrieveUpdateBlankUseDefaultAPIView):
     queryset = Tag.objects.all()
     serializer_class = UpdateTagSerializer
     permission_classes = (IsAuthor,)
+    lookup_field = 'slug'
     authentication_classes = (TokenAuthentication,)
 
 
@@ -42,6 +44,7 @@ class TagDestroyAPIView(RetrieveDestroyAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (IsAdminUser,)
+    lookup_field = 'slug'
     authentication_classes = (TokenAuthentication,)
 
 
@@ -57,4 +60,5 @@ class TagRemoveImage(RetrieveUpdateBlankUseDefaultAPIView):
     queryset = Tag.objects.all()
     serializer_class = RemoveTagImageSerializer
     permission_classes = (IsAuthor,)
+    lookup_field = 'slug'
     authentication_classes = (TokenAuthentication,)
