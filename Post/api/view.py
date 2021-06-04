@@ -26,6 +26,7 @@ class PostListAPIView(ListAPIView):
 class PostDetailAPIView(RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    lookup_field = 'slug'
     permission_classes = (AllowAny,)
 
 
@@ -34,6 +35,7 @@ class PostUpdateAPIView(RetrieveUpdateBlankUseDefaultAPIView):
     queryset = Post.objects.all()
     serializer_class = UpdatePostSerializer
     permission_classes = (IsAuthorOfThisPost,)
+    lookup_field = 'slug'
     authentication_classes = (TokenAuthentication,)
 
 
@@ -42,6 +44,7 @@ class PostDestroyAPIView(RetrieveDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (IsAdminOrAuthorOfThisPost,)
+    lookup_field = 'slug'
     authentication_classes = (TokenAuthentication,)
 
 
