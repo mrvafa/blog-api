@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Permission
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
@@ -18,9 +19,23 @@ class EditUserSerializer(serializers.ModelSerializer):
 
 
 class AuthorUserSerializers(serializers.ModelSerializer):
+    is_author = serializers.BooleanField(
+        default=True,
+    )
+
     class Meta:
         model = User
         fields = ('is_author',)
+
+    def update(self, *args, **kwargs):
+        user = args[0]
+        is_author = args[1]['is_author']
+        permission = Permission.objects.get(codename='is_author')
+        if is_author:
+            user.user_permissions.add(permission)
+        else:
+            user.user_permissions.remove(permission)
+        return super(AuthorUserSerializers, self).update(*args, **kwargs)
 
 
 class EditUserStatusSerializers(serializers.ModelSerializer):

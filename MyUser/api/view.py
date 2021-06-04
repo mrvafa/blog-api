@@ -68,16 +68,6 @@ class UserAuthor(RetrieveUpdateAPIView):
     permission_classes = (IsAdminUser,)
     authentication_classes = (TokenAuthentication,)
 
-    def put(self, request, *args, **kwargs):
-        user = User.objects.get(id=kwargs['pk'])
-        if 'is_author' in request.data:
-            permission = Permission.objects.get(codename='is_author')
-            if request.data['is_author'] == 'true':
-                user.user_permissions.add(permission)
-            else:
-                user.user_permissions.remove(permission)
-        return super(UserAuthor, self).put(request, args, kwargs)
-
 
 class MakeUserAdmin(RetrieveUpdateAPIView):
     queryset = User.objects.all()
