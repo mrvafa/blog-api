@@ -16,7 +16,6 @@ class PostListAPIView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (AllowAny,)
-    # authentication_classes = (TokenAuthentication,)
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('title', 'body')
     pagination_class = PostPageNumberPagination
@@ -28,7 +27,6 @@ class PostDetailAPIView(RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (AllowAny,)
-    # authentication_classes = (TokenAuthentication,)
 
 
 # update obj
