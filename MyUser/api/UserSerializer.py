@@ -19,9 +19,7 @@ class EditUserSerializer(serializers.ModelSerializer):
 
 
 class AuthorUserSerializers(serializers.ModelSerializer):
-    is_author = serializers.BooleanField(
-        default=True,
-    )
+    is_author = serializers.BooleanField()
 
     class Meta:
         model = User
