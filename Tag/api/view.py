@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAdminUser, AllowAny
 from APIViews.CustomRetrieveUpdateAPIView import RetrieveUpdateBlankUseDefaultAPIView
 from Authorizations.Authorization import IsAuthor
 from Tag.models import Tag
-from .TagSerializer import TagSerializer, UpdateTagSerializer, RemoveTagImageSerializer
+from .TagSerializer import TagSerializer, RemoveTagImageSerializer
 from .pagination import TagPageNumberPagination
 
 
@@ -33,7 +33,7 @@ class TagDetailAPIView(RetrieveAPIView):
 # update obj
 class TagUpdateAPIView(RetrieveUpdateBlankUseDefaultAPIView):
     queryset = Tag.objects.all()
-    serializer_class = UpdateTagSerializer
+    serializer_class = TagSerializer
     permission_classes = (IsAuthor,)
     lookup_field = 'slug'
     authentication_classes = (TokenAuthentication,)

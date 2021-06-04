@@ -14,12 +14,6 @@ class TagSerializer(ModelSerializer):
         fields = ('title', 'image', 'body', 'added_datetime', 'modify_datetime', 'slug')
 
 
-class UpdateTagSerializer(ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ('title', 'image', 'body')
-
-
 class RemoveTagImageSerializer(UpdateTagSerializer):
     class Meta:
         model = Tag
