@@ -6,7 +6,7 @@ from Tag.models import Tag
 class TagSerializer(ModelSerializer):
     class Meta:
         model = Tag
-        fields = ('title', 'image', 'body')
+        fields = ('title', 'image', 'body', 'added_datetime', 'modify_datetime', 'slug')
 
 
 class UpdateTagSerializer(ModelSerializer):
