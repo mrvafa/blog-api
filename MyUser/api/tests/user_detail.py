@@ -6,7 +6,7 @@ from MyUser.models import User
 
 
 @override_settings(ACCOUNT_EMAIL_VERIFICATION='none')
-class TestListOfUsers(TestCase):
+class TestDetailOfUser(TestCase):
     def setUp(self):
         self.client = APIClient()
         user = User.objects.create(username='mrvafa', email='mrvafa@domain.com', is_superuser=True, is_staff=True)
