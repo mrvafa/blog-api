@@ -46,8 +46,9 @@ Not ready!!
 - [X] Create API for user to make user admin, author, non-admin, non-author and deactivate-user.
 - [X] Create custom permission for post (is_author)
 - [ ] Tests
-- [ ] Use `phonenumbers` package for phone number validations
+- [ ] Add Author page and Tag page (get all posts by author/tag).
 - [ ] Finishing version 1.0
+- [ ] Use `phonenumbers` package for phone number validations
 - [ ] Add likes, read_later, views, read
 - [ ] Add read time estimate.
 - [ ] Add comments (self-relation, like and dislike)
