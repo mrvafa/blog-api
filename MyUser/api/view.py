@@ -1,4 +1,3 @@
-from django.contrib.auth.models import Permission
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import (ListAPIView, RetrieveAPIView, RetrieveDestroyAPIView, RetrieveUpdateAPIView)
@@ -74,12 +73,6 @@ class MakeUserAdmin(RetrieveUpdateAPIView):
     serializer_class = EditUserStatusSerializers
     permission_classes = (IsSuperUser,)
     authentication_classes = (TokenAuthentication,)
-
-    def put(self, request, *args, **kwargs):
-        user = User.objects.filter(id=kwargs['pk']).first()
-        permission = Permission.objects.get(codename='is_author')
-        user.user_permissions.add(permission)
-        return super(MakeUserAdmin, self).put(request, args, kwargs)
 
 
 class UserChangePasswordAPIView(RetrieveUpdateAPIView):
