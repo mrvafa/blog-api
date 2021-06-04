@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -10,7 +11,7 @@ from Validators.phone_number_validators import iran_phone_validate
 
 
 class User(AbstractUser):
-    email = models.EmailField(_('email address'), blank=True, unique=True)
+    email = models.EmailField(_('email address'), blank=True, unique=False)
     gender = models.TextField(
         blank=True,
         null=True,
@@ -45,8 +46,9 @@ class User(AbstractUser):
     def clean(self, *args, **kwargs):
         if not self.phone_number:
             self.phone_number = None
-        if not self.email:
-            self.email = None
+        user_with_this_email = User.objects.filter(email=self.email).first()
+        if self.email and user_with_this_email and not user_with_this_email == self:
+            raise ValidationError('Email has taken')
         super(User, self).clean()
 
     def save(self, *args, **kwargs):
