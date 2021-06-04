@@ -12,6 +12,6 @@ urlpatterns = [
     path('api/delete-account/', UserDestroyOwnAPIView.as_view(), name='delete_account'),
     path('api/change-password/', UserChangePasswordAPIView.as_view(), name='change_password'),
 
-    path('api/<int:pk>/make-user-author/', UserAuthor.as_view(), name='make_user_author'),
-    path('api/<int:pk>/make-user-admin/', MakeUserAdmin.as_view(), name='make_user_admin'),
+    path('api/<int:pk>/change-user-author/', UserAuthor.as_view(), name='change_user_author'),
+    path('api/<int:pk>/change-user-permissions/', MakeUserAdmin.as_view(), name='change_user_permissions'),
 ]
