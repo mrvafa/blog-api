@@ -45,6 +45,7 @@ Not ready!!
 - [X] Create Profile API.
 - [X] Create API for user to make user admin, author, non-admin, non-author and deactivate-user.
 - [X] Create custom permission for post (is_author)
+- [ ] Remove phone_validation, create function to set phone number.
 - [ ] Tests
 - [ ] Add Author page and Tag page (get all posts by author/tag).
 - [ ] Finishing version 1.0
