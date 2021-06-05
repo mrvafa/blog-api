@@ -1,12 +1,11 @@
-import filetype
 from PIL import Image
 from django.conf import settings
 from django.core.exceptions import ValidationError
 
 
 def _is_allowed_extension(image, valid_extensions):
-    kind = filetype.guess(image)
-    if not kind or kind.extension not in valid_extensions:
+    img = Image.open(image)
+    if img.format.lower() not in valid_extensions:
         return False
     return True
 

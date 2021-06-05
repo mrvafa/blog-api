@@ -78,7 +78,7 @@ class TestImagePropertiesValidator(TestCase):
             content_type='image/jpeg',
             content=image_content,
         )
-        self.assertTrue(_is_allowed_extension(image, ['jpg']))
+        self.assertTrue(_is_allowed_extension(image, ['jpg', 'jpeg']))
 
     def test_wrong_allowed_extension(self):
         image_content = requests.get('https://picsum.photos/200/300').content

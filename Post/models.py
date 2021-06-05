@@ -4,15 +4,15 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 
-from Post.validators.post_image_validators import post_image_validate
 from Tag.models import Tag
+from Validators.image_validators import profile_image_validate
 
 
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, editable=False)
     title = models.CharField(max_length=settings.POST_TITLE_LENGTH_MAX, unique=True, db_index=True)
     slug = models.CharField(max_length=settings.POST_TITLE_LENGTH_MAX, unique=True, editable=False)
-    image = models.ImageField(upload_to='post/%m', validators=[post_image_validate], )
+    image = models.ImageField(upload_to='post/%m', validators=[profile_image_validate], )
     body = RichTextUploadingField()
     added_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True, )
     modify_datetime = models.DateTimeField(auto_now=True, blank=True, null=True, )
