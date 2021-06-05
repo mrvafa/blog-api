@@ -1,4 +1,7 @@
+import requests
+from django.conf import settings
 from django.contrib.auth.models import Permission
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from rest_framework.test import APIClient
@@ -45,3 +48,33 @@ class TestEditTag(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.author_token}')
         respond = self.client.put(reverse('tag_update', args=('t1',)), data={'title': 't2'})
         self.assertEqual(400, respond.status_code)
+
+    def test_ok_tag_remove_image(self):
+        width = settings.TAG_IMAGE_WIDTH_MIN
+        image_content = requests.get(f'https://picsum.photos/{width}/').content
+        image = SimpleUploadedFile(
+            name='test_profile',
+            content_type='image/jpeg',
+            content=image_content,
+        )
+        self.tag_1.image = image
+        self.tag_1.save()
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.author_token}')
+        respond = self.client.put(reverse('tag_update', args=('t1',)), data={'image': ''})
+        self.assertEqual(200, respond.status_code)
+        self.assertEqual('', Tag.objects.filter(slug='t1').first().image.name)
+
+    def test_ok_tag_not_remove_image(self):
+        width = settings.TAG_IMAGE_WIDTH_MIN
+        image_content = requests.get(f'https://picsum.photos/{width}/').content
+        image = SimpleUploadedFile(
+            name='test_profile.jpg',
+            content_type='image/jpeg',
+            content=image_content,
+        )
+        self.tag_1.image = image
+        self.tag_1.save()
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.author_token}')
+        respond = self.client.put(reverse('tag_update', args=('t1',)), data={'title': 'b31'})
+        self.assertEqual(200, respond.status_code)
+        self.assertNotEqual('', Tag.objects.filter(slug='b31').first().image.name)

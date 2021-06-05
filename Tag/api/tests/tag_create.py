@@ -1,4 +1,7 @@
+import requests
+from django.conf import settings
 from django.contrib.auth.models import Permission
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from rest_framework.test import APIClient
@@ -60,3 +63,16 @@ class TestCreateTag(TestCase):
         respond = self.client.post(reverse('tag_create'), data=data)
         self.assertEqual(403, respond.status_code)
         self.assertIsNone(Tag.objects.filter(slug='t1').first())
+
+    def test_ok_create_tag_with_image(self):
+        width = settings.TAG_IMAGE_WIDTH_MIN
+        image_content = requests.get(f'https://picsum.photos/{width}/').content
+        image = SimpleUploadedFile(
+            name='test_post.jpg',
+            content_type='image/jpeg',
+            content=image_content,
+        )
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.author_token}', )
+        respond = self.client.post(reverse('tag_create'), data={'title': 'b31', 'image': image}, )
+        self.assertEqual(201, respond.status_code)
+        self.assertNotEqual('', Tag.objects.filter(title='b31').first().image.name)
