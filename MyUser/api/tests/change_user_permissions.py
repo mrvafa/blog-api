@@ -31,7 +31,7 @@ class TestMakeUserAdmin(TestCase):
         data = {'is_staff': True}
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
         user_id = User.objects.get(username='user1').id
-        respond = self.client.put(reverse('change_user_permissions', args=(user_id,)), data=data)
+        respond = self.client.patch(reverse('change_user_permissions', args=(user_id,)), data=data)
         self.assertEqual(200, respond.status_code)
         self.assertTrue(User.objects.get(username='user1').is_staff)
 
@@ -39,14 +39,15 @@ class TestMakeUserAdmin(TestCase):
         data = {'is_staff': False}
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
         user_id = User.objects.get(username='user2').id
-        respond = self.client.put(reverse('change_user_permissions', args=(user_id,)), data=data)
+        respond = self.client.patch(reverse('change_user_permissions', args=(user_id,)), data=data)
         self.assertEqual(200, respond.status_code)
         self.assertFalse(User.objects.get(username='user2').is_staff)
 
-    def test_ok_empty_data(self):
+    def test_ok_make_all_permissions_to_false(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
         user_id = User.objects.get(username='mrvafa').id
-        respond = self.client.put(reverse('change_user_permissions', args=(user_id,)), data={})
+        data = {'is_active': False, 'is_staff': False, 'is_superuser': False}
+        respond = self.client.patch(reverse('change_user_permissions', args=(user_id,)), data=data)
         self.assertEqual(200, respond.status_code)
         self.assertFalse(User.objects.get(username='mrvafa').is_staff)
         self.assertFalse(User.objects.get(username='mrvafa').is_active)

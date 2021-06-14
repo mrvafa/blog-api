@@ -3,7 +3,6 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import (ListAPIView, RetrieveAPIView, RetrieveDestroyAPIView, RetrieveUpdateAPIView)
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
-from APIViews.CustomRetrieveUpdateAPIView import RetrieveUpdateBlankUseDefaultAPIView
 from Authorizations.Authorization import IsSuperUser
 from .UserSerializer import (UserSerializer, EditUserSerializer, AuthorUserSerializers,
                              EditUserStatusSerializers, UserChangePasswordSerializer)
@@ -39,7 +38,7 @@ class UserDestroyAPIView(RetrieveDestroyAPIView):
     authentication_classes = (TokenAuthentication,)
 
 
-class UserEditOwnAPIView(RetrieveUpdateBlankUseDefaultAPIView):
+class UserEditOwnAPIView(RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = EditUserSerializer
     permission_classes = (IsAuthenticated,)

@@ -19,5 +19,5 @@ class TestDetailOfTag(TestCase):
         self.assertEqual(self.tag_1.slug, respond.json()['slug'])
 
     def test_wrong_put_tag(self):
-        respond = self.client.put(reverse('tag_detail', args=('t1',)))
+        respond = self.client.patch(reverse('tag_detail', args=('t1',)))
         self.assertEqual(405, respond.status_code)

@@ -19,19 +19,19 @@ class TestAllAuthChangePassword(TestCase):
     def test_wrong_change_password_no_password(self):
         token = self.client.post(reverse('rest_login'), data=self.user_1_data).json()['key']
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
-        respond = self.client.put(reverse('change_password'))
+        respond = self.client.patch(reverse('change_password'))
         self.assertEqual(400, respond.status_code)
 
     def test_wrong_change_password_one_password(self):
         token = self.client.post(reverse('rest_login'), data=self.user_1_data).json()['key']
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
-        respond = self.client.put(reverse('change_password'), data={'new_password1': self.user_1_new_password})
+        respond = self.client.patch(reverse('change_password'), data={'new_password1': self.user_1_new_password})
         self.assertEqual(400, respond.status_code)
 
     def test_ok_change_password(self):
         token = self.client.post(reverse('rest_login'), data=self.user_1_data).json()['key']
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
-        respond = self.client.put(
+        respond = self.client.patch(
             reverse('change_password'),
             data={'new_password1': self.user_1_new_password, 'new_password2': self.user_1_new_password}
         )
@@ -40,7 +40,7 @@ class TestAllAuthChangePassword(TestCase):
     def test_ok_change_password_changed(self):
         token = self.client.post(reverse('rest_login'), data=self.user_1_data).json()['key']
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
-        self.client.put(
+        self.client.patch(
             reverse('change_password'),
             data={'new_password1': self.user_1_new_password, 'new_password2': self.user_1_new_password}
         )
@@ -49,7 +49,7 @@ class TestAllAuthChangePassword(TestCase):
     def test_ok_change_password_login(self):
         token = self.client.post(reverse('rest_login'), data=self.user_1_data).json()['key']
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
-        self.client.put(
+        self.client.patch(
             reverse('change_password'),
             data={'new_password1': self.user_1_new_password, 'new_password2': self.user_1_new_password}
         )
@@ -69,7 +69,7 @@ class TestAllAuthChangePassword(TestCase):
     def test_ok_change_password_check_different_tokens(self):
         old_token = self.client.post(reverse('rest_login'), data=self.user_1_data).json()['key']
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {old_token}')
-        respond = self.client.put(
+        respond = self.client.patch(
             reverse('change_password'),
             data={'new_password1': self.user_1_new_password, 'new_password2': self.user_1_new_password}
         )

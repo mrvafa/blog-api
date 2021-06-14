@@ -32,7 +32,7 @@ class TestMakeUserAuthor(TestCase):
         data = {'is_author': True}
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
         user_id = User.objects.get(username='user1').id
-        respond = self.client.put(reverse('change_user_author', args=(user_id,)), data=data)
+        respond = self.client.patch(reverse('change_user_author', args=(user_id,)), data=data)
         self.assertEqual(200, respond.status_code)
         self.assertTrue(User.objects.get(username='user1').is_author())
 
@@ -40,13 +40,13 @@ class TestMakeUserAuthor(TestCase):
         data = {'is_author': False}
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
         user_id = User.objects.get(username='user3').id
-        respond = self.client.put(reverse('change_user_author', args=(user_id,)), data=data)
+        respond = self.client.patch(reverse('change_user_author', args=(user_id,)), data=data)
         self.assertEqual(200, respond.status_code)
         self.assertFalse(User.objects.get(username='user3').is_author())
 
     def test_ok_empty_data_is_author(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
         user_id = User.objects.get(username='user1').id
-        respond = self.client.put(reverse('change_user_author', args=(user_id,)), data={})
+        respond = self.client.patch(reverse('change_user_author', args=(user_id,)), data={})
         self.assertEqual(200, respond.status_code)
         self.assertFalse(User.objects.get(username='user1').is_author())

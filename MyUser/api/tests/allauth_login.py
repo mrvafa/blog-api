@@ -46,7 +46,7 @@ class TestAllAuthLogin(TestCase):
         user_data = {'username': 'user2', 'password': '!jX+2#~:SvX@mMz:'}
         token = self.client.post(reverse('rest_login'), data=user_data).json()
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token["key"]}')
-        res = self.client.put(reverse('rest_user_details'), data={'first_name': 'Ali', 'username': 'user2'})
+        res = self.client.patch(reverse('rest_user_details'), data={'first_name': 'Ali', 'username': 'user2'})
         result = res.json()
         self.assertEqual('Ali', result['first_name'])
         self.assertEqual('', result['last_name'])
@@ -56,7 +56,7 @@ class TestAllAuthLogin(TestCase):
         user_data = {'username': 'user2', 'password': '!jX+2#~:SvX@mMz:'}
         token = self.client.post(reverse('rest_login'), data=user_data).json()
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token["key"]}')
-        res = self.client.put(reverse('rest_user_details'), data={'last_name': 'last_name', 'username': 'user2'})
+        res = self.client.patch(reverse('rest_user_details'), data={'last_name': 'last_name', 'username': 'user2'})
         result = res.json()
         self.assertEqual('', result['first_name'])
         self.assertEqual('last_name', result['last_name'])
@@ -66,7 +66,7 @@ class TestAllAuthLogin(TestCase):
         user_data = {'username': 'user2', 'password': '!jX+2#~:SvX@mMz:'}
         token = self.client.post(reverse('rest_login'), data=user_data).json()
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token["key"]}')
-        res = self.client.put(reverse('rest_user_details'), data={'email': 'user3@domain.com', 'username': 'user2'})
+        res = self.client.patch(reverse('rest_user_details'), data={'email': 'user3@domain.com', 'username': 'user2'})
         result = res.json()
         self.assertEqual(User.objects.get(username='user2').email, result['email'])
 
@@ -74,5 +74,5 @@ class TestAllAuthLogin(TestCase):
         user_data = {'username': 'user2', 'password': '!jX+2#~:SvX@mMz:'}
         token = self.client.post(reverse('rest_login'), data=user_data).json()
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token["key"]}')
-        res = self.client.put(reverse('rest_user_details'), data={'username': 'user3'})
+        res = self.client.patch(reverse('rest_user_details'), data={'username': 'user3'})
         self.assertEqual(400, res.status_code)

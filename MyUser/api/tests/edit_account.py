@@ -41,7 +41,7 @@ class TestListOfUsers(TestCase):
 
         }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
-        respond = self.client.put(reverse('edit_account'), data=data)
+        respond = self.client.patch(reverse('edit_account'), data=data)
         first_name = respond.json()['first_name']
         last_name = respond.json()['last_name']
         self.assertEqual('my first name', first_name)
@@ -52,7 +52,7 @@ class TestListOfUsers(TestCase):
             'username': 'user3',
         }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
-        respond = self.client.put(reverse('edit_account'), data=data)
+        respond = self.client.patch(reverse('edit_account'), data=data)
         self.assertEqual(400, respond.status_code)
 
     def test_wrong_put_edit_gender(self):
@@ -60,7 +60,7 @@ class TestListOfUsers(TestCase):
             'gender': 'x',
         }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
-        respond = self.client.put(reverse('edit_account'), data=data)
+        respond = self.client.patch(reverse('edit_account'), data=data)
         self.assertEqual(400, respond.status_code)
 
     def test_ok_put_edit_birthday(self):
@@ -68,7 +68,7 @@ class TestListOfUsers(TestCase):
             'birthday': '2000-09-10',
         }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
-        respond = self.client.put(reverse('edit_account'), data=data)
+        respond = self.client.patch(reverse('edit_account'), data=data)
         self.assertEqual(200, respond.status_code)
 
     def test_wrong_put_edit_birthday(self):
@@ -76,7 +76,7 @@ class TestListOfUsers(TestCase):
             'birthday': '2000-04-31',
         }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
-        respond = self.client.put(reverse('edit_account'), data=data)
+        respond = self.client.patch(reverse('edit_account'), data=data)
         self.assertEqual(400, respond.status_code)
 
     def test_wrong_put_edit_phone_number(self):
@@ -84,7 +84,7 @@ class TestListOfUsers(TestCase):
             'phone_number': '+9891234567899',
         }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
-        respond = self.client.put(reverse('edit_account'), data=data)
+        respond = self.client.patch(reverse('edit_account'), data=data)
         self.assertEqual(400, respond.status_code)
 
     def test_ok_put_edit_phone_number(self):
@@ -92,5 +92,5 @@ class TestListOfUsers(TestCase):
             'phone_number': '+989123456789',
         }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
-        respond = self.client.put(reverse('edit_account'), data=data)
+        respond = self.client.patch(reverse('edit_account'), data=data)
         self.assertEqual(200, respond.status_code)

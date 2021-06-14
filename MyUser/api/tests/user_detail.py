@@ -47,5 +47,5 @@ class TestDetailOfUser(TestCase):
 
     def test_wrong_edit_user(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
-        respond = self.client.put(reverse('user_detail', args=(1,)), data={'first_name': 'name'})
+        respond = self.client.patch(reverse('user_detail', args=(1,)), data={'first_name': 'name'})
         self.assertEqual(405, respond.status_code)

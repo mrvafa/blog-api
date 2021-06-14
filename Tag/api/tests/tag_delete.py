@@ -38,5 +38,5 @@ class TestDeleteTag(TestCase):
         self.assertEqual(204, respond.status_code)
 
     def test_wrong_delete_tag_no_authorization(self):
-        respond = self.client.put(reverse('tag_destroy', args=('t1',)))
+        respond = self.client.patch(reverse('tag_destroy', args=('t1',)))
         self.assertEqual(401, respond.status_code)

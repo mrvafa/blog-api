@@ -35,18 +35,18 @@ class TestEditTag(TestCase):
         respond = self.client.get(reverse('tag_update', args=('t1',)))
         self.assertEqual(200, respond.status_code)
         self.assertEqual(self.tag_1.slug, respond.json()['slug'])
-        respond = self.client.put(reverse('tag_update', args=('t1',)), data={'title': 's5'})
+        respond = self.client.patch(reverse('tag_update', args=('t1',)), data={'title': 's5'})
         self.assertEqual(200, respond.status_code)
         self.assertIsNotNone(Tag.objects.filter(slug='s5'))
 
     def test_wrong_edit_tag_non_author(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.admin_token}')
-        respond = self.client.put(reverse('tag_update', args=('t1',)), data={'title': 't5'})
+        respond = self.client.patch(reverse('tag_update', args=('t1',)), data={'title': 't5'})
         self.assertEqual(403, respond.status_code)
 
     def test_wrong_edit_tag_not_unique_title(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.author_token}')
-        respond = self.client.put(reverse('tag_update', args=('t1',)), data={'title': 't2'})
+        respond = self.client.patch(reverse('tag_update', args=('t1',)), data={'title': 't2'})
         self.assertEqual(400, respond.status_code)
 
     def test_ok_tag_remove_image(self):
@@ -60,7 +60,7 @@ class TestEditTag(TestCase):
         self.tag_1.image = image
         self.tag_1.save()
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.author_token}')
-        respond = self.client.put(reverse('tag_update', args=('t1',)), data={'image': ''})
+        respond = self.client.patch(reverse('tag_update', args=('t1',)), data={'image': ''})
         self.assertEqual(200, respond.status_code)
         self.assertEqual('', Tag.objects.filter(slug='t1').first().image.name)
 
@@ -75,6 +75,6 @@ class TestEditTag(TestCase):
         self.tag_1.image = image
         self.tag_1.save()
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.author_token}')
-        respond = self.client.put(reverse('tag_update', args=('t1',)), data={'title': 'b31'})
+        respond = self.client.patch(reverse('tag_update', args=('t1',)), data={'title': 'b31'})
         self.assertEqual(200, respond.status_code)
         self.assertNotEqual('', Tag.objects.filter(slug='b31').first().image.name)

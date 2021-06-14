@@ -39,7 +39,7 @@ class TestCreateTag(TestCase):
 
     def test_wrong_put_tag(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.author_token}')
-        respond = self.client.put(reverse('tag_create', ))
+        respond = self.client.patch(reverse('tag_create', ))
         self.assertEqual(405, respond.status_code)
 
     def test_wrong_post_slug(self):

@@ -1,10 +1,10 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.generics import (ListAPIView, RetrieveAPIView, RetrieveDestroyAPIView,
-                                     CreateAPIView)
+from rest_framework.generics import (
+    ListAPIView, RetrieveAPIView, RetrieveDestroyAPIView, CreateAPIView, RetrieveUpdateAPIView
+)
 from rest_framework.permissions import IsAdminUser, AllowAny
 
-from APIViews.CustomRetrieveUpdateAPIView import RetrieveUpdateBlankUseDefaultAPIView
 from Authorizations.Authorization import IsAuthor
 from Tag.models import Tag
 from .TagSerializer import TagSerializer
@@ -31,7 +31,7 @@ class TagDetailAPIView(RetrieveAPIView):
 
 
 # update obj
-class TagUpdateAPIView(RetrieveUpdateBlankUseDefaultAPIView):
+class TagUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (IsAuthor,)

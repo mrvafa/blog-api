@@ -34,5 +34,5 @@ class TestDetailOfPost(TestCase):
         self.assertEqual(self.post_1.slug, respond.json()['slug'])
 
     def test_wrong_put_post(self):
-        respond = self.client.put(reverse('post_detail', args=('p1',)))
+        respond = self.client.patch(reverse('post_detail', args=('p1',)))
         self.assertEqual(405, respond.status_code)
