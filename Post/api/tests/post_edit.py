@@ -38,11 +38,18 @@ class TestEditPost(TestCase):
         )
 
         self.tag_1 = Tag.objects.create(title='t1')
+        self.tag_2 = Tag.objects.create(title='t2')
+        self.tag_3 = Tag.objects.create(title='t3')
 
         self.post_1 = Post.objects.create(title='p1', image=image, author=self.author_1, body='b1')
         self.post_1.tags.add(self.tag_1)
         self.post_1.save()
+
         self.post_2 = Post.objects.create(title='p2', image=image, author=self.author_1, body='b2')
+        self.post_2.tags.add(self.tag_2)
+        self.post_2.tags.add(self.tag_3)
+        self.post_2.save()
+
         self.post_3 = Post.objects.create(title='p3', image=image, author=self.author_2, body='b3')
 
         self.author_1_token = self.client.post(
@@ -94,3 +101,10 @@ class TestEditPost(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.author_2_token}')
         respond = self.client.get(reverse('post_update', args=('p2',)))
         self.assertEqual(403, respond.status_code)
+
+    def test_ok_post_edit_post_remove_one_of_tag(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.author_1_token}')
+        respond = self.client.patch(reverse('post_update', args=('p2',)), data={'tags': [self.tag_2.id]})
+        self.assertEqual(200, respond.status_code)
+        self.assertEqual(len(Post.objects.get(slug='p2').tags.all()), 1)
+        self.assertEqual(Post.objects.get(slug='p2').tags.first(), Tag.objects.get(title='t2'))

@@ -25,6 +25,11 @@ class UpdatePostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('title', 'image', 'body', 'tags', 'slug', 'added_datetime', 'modify_datetime', 'author')
 
+    def update(self, instance, validated_data):
+        if 'tags' not in validated_data:
+            instance.tags.clear()
+        return super(UpdatePostSerializer, self).update(instance, validated_data)
+
 
 class CreatePostSerializer(serializers.ModelSerializer):
     added_datetime = serializers.DateTimeField(read_only=True)
