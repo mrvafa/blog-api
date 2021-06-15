@@ -81,12 +81,12 @@ class TestListOfUsers(TestCase):
 
     def test_wrong_put_phone_number(self):
         data = {
-            'phone_number': '+9891234567899',
+            'phone_number': '+989123456789',
         }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
         respond = self.client.patch(reverse('edit_account'), data=data)
         self.assertEqual(200, respond.status_code)
-        self.assertEqual('', respond.json()['phone_number'])
+        self.assertIsNone(respond.json()['phone_number'])
 
     def test_ok_put_edit_phone_number(self):
         data = {

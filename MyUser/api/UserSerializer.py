@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 class EditUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'gender', 'birthday', 'image',)
+        fields = ('username', 'first_name', 'last_name', 'gender', 'birthday', 'image', 'phone_number')
         read_only_fields = ('phone_number',)
 
 
