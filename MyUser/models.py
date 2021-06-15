@@ -30,7 +30,6 @@ class User(AbstractUser):
         validators=[iran_phone_validate],
         unique=True,
     )
-    phone_number_verified = models.BooleanField(default=False, editable=False)
 
     image = models.ImageField(
         blank=True,
@@ -59,7 +58,6 @@ class User(AbstractUser):
         return self.has_perm('Post.is_author')
 
     def set_phone_number(self, new_phone_number):
-        self.phone_number_verified = False
         self.phone_number = new_phone_number
         self.save()
 

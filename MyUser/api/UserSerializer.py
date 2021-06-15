@@ -10,12 +10,14 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         exclude = ('password',)
+        read_only_fields = ('phone_number',)
 
 
 class EditUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'gender', 'birthday', 'phone_number', 'image',)
+        fields = ('username', 'first_name', 'last_name', 'gender', 'birthday', 'image',)
+        read_only_fields = ('phone_number',)
 
 
 class AuthorUserSerializers(serializers.ModelSerializer):

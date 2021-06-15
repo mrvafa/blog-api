@@ -247,14 +247,6 @@ class TestUser(TestCase):
         self.assertIsNotNone(User.objects.get(phone_number='+989123456780'))
         self.assertIsNone(User.objects.filter(phone_number='+989123456789').first())
 
-    def test_ok_change_phone_number_check_validation(self):
-        user = User.objects.create(username='user23', email='user23@domain.com', phone_number='+989123456789')
-        user.set_password('+g//78GMBT8>/zCXk')
-        user.phone_number_verified = True
-        user.save()
-        user.set_phone_number('+989123456780')
-        self.assertFalse(User.objects.get(phone_number='+989123456780').phone_number_verified)
-
     def test_wrong_change_phone_number(self):
         user = User.objects.create(username='user24', email='user24@domain.com', phone_number='+989123456789')
         user.set_password('A/?#+B?DNpNv9+TK')
