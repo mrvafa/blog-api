@@ -19,20 +19,22 @@ class UpdatePostSerializer(serializers.ModelSerializer):
     added_datetime = serializers.DateTimeField(read_only=True)
     modify_datetime = serializers.DateTimeField(read_only=True)
     slug = serializers.SlugField(read_only=True)
+    author = serializers.ReadOnlyField(source='author.username', read_only=True)
 
     class Meta:
         model = Post
-        fields = ('title', 'image', 'body', 'tags', 'slug', 'added_datetime', 'modify_datetime',)
+        fields = ('title', 'image', 'body', 'tags', 'slug', 'added_datetime', 'modify_datetime', 'author')
 
 
 class CreatePostSerializer(serializers.ModelSerializer):
     added_datetime = serializers.DateTimeField(read_only=True)
     modify_datetime = serializers.DateTimeField(read_only=True)
     slug = serializers.SlugField(read_only=True)
+    author = serializers.ReadOnlyField(source='author.username', read_only=True)
 
     class Meta:
         model = Post
-        fields = ('title', 'image', 'body', 'tags', 'slug', 'added_datetime', 'modify_datetime',)
+        fields = ('title', 'image', 'body', 'tags', 'slug', 'added_datetime', 'modify_datetime', 'author')
 
     def create(self, validated_data):
         validated_data['author'] = self.context.get('request').user
