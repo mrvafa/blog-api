@@ -84,3 +84,26 @@ class UserChangePasswordSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('new_password1', 'new_password2')
+
+
+class SetPhoneNumberSerializer(serializers.ModelSerializer):
+    code = serializers.CharField(required=True, write_only=True, )
+    phone_number = serializers.CharField(required=True, )
+
+    class Meta:
+        model = User
+        fields = ('phone_number', 'code')
+
+    def update(self, instance, validated_data):
+        if 'phone_number' not in validated_data or 'code' not in validated_data:
+            raise serializers.ValidationError({'error': 'code and phone_number is required'})
+
+        # TODO: Code value is equal to input
+        if validated_data['code'] == '123':
+            try:
+                instance.set_phone_number(validated_data['phone_number'])
+            except Exception as e:
+                raise serializers.ValidationError({'error': e.messages})
+            return instance
+        else:
+            raise serializers.ValidationError({'error': 'Code is wrong.'})

@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 from Authorizations.Authorization import IsSuperUser
 from .UserSerializer import (UserSerializer, EditUserSerializer, AuthorUserSerializers,
-                             EditUserStatusSerializers, UserChangePasswordSerializer)
+                             EditUserStatusSerializers, UserChangePasswordSerializer, SetPhoneNumberSerializer)
 from .pagination import UserPageNumberPagination
 from ..models import User
 
@@ -77,6 +77,17 @@ class MakeUserAdmin(RetrieveUpdateAPIView):
 class UserChangePasswordAPIView(RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserChangePasswordSerializer
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    def get_object(self, **kwargs):
+        if 'pk' not in self.kwargs:
+            return self.request.user
+
+
+class SetPhoneNumberAPIView(RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = SetPhoneNumberSerializer
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
