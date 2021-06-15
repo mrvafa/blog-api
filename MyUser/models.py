@@ -58,6 +58,8 @@ class User(AbstractUser):
         return self.has_perm('Post.is_author')
 
     def set_phone_number(self, new_phone_number):
+        if new_phone_number[0] == '0':
+            new_phone_number = '+98' + new_phone_number[1:]
         self.phone_number = new_phone_number
         self.save()
 
