@@ -50,6 +50,7 @@ Not ready!!
 - [ ] Add phone_number_conform table (requested_time, expired_time, code, phone_number) 
 - [ ] Tests
 - [ ] Finishing version 1.0
+- [ ] Search and search filtering
 - [ ] Use `phonenumbers` package for phone number validations
 - [ ] Add likes, read_later, views, read
 - [ ] Add read time estimate.
