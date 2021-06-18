@@ -51,6 +51,7 @@ Not ready!!
 - [ ] Tests
 - [ ] Finishing version 1.0
 - [ ] Search and search filtering
+- [ ] Create search history for user
 - [ ] Use `phonenumbers` package for phone number validations
 - [ ] Add likes, read_later, views, read
 - [ ] Add read time estimate.
