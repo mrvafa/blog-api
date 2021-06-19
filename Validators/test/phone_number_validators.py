@@ -20,3 +20,7 @@ class TestPhoneNumberValidators(TestCase):
     def test_wrong_iran_phone_validate_less_number_plus98(self):
         with self.assertRaises(ValidationError):
             iran_phone_validate('+9831234567')
+
+    def test_wrong_iran_phone_validate_no_zero(self):
+        with self.assertRaises(ValidationError):
+            iran_phone_validate('9123456789')
