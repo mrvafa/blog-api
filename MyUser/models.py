@@ -12,7 +12,7 @@ from django.utils.translation import gettext_lazy as _
 from Validators.birthday_validators import age_min_validator, age_max_validator
 from Validators.image_validators import profile_image_validate
 from Validators.phone_number_validators import iran_phone_validate
-from kavenegar import KavenegarAPI
+from kavenegar.kavenegar import KavenegarAPI
 
 
 class User(AbstractUser):
