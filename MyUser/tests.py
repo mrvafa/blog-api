@@ -6,9 +6,10 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Permission
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
+from django.test import TestCase, override_settings
+from django.utils import timezone
 
-from MyUser.models import User
+from MyUser.models import User, SMSCode
 
 
 class TestUser(TestCase):
@@ -273,3 +274,41 @@ class TestUser(TestCase):
         user.email = 'occupied@domain.com'
         with self.assertRaises(ValidationError):
             user.save()
+
+
+@override_settings(SMS_BACKEND='sms.backends.console.SmsBackend')
+class TestSMSCode(TestCase):
+    def test_ok_create_sms_code_in_db(self):
+        sms_code = SMSCode.objects.create(
+            phone_number='+989134547883',
+            code='123',
+        )
+        self.assertIsNotNone(sms_code.created_datetime)
+        self.assertIsNotNone(sms_code.expired_datetime)
+
+    def test_ok_send_sms(self):
+        code = SMSCode.send_sms(phone_number='+989123456789')
+        self.assertIsNotNone(code)
+
+    def test_wrong_code_expired(self):
+        SMSCode.objects.create(
+            phone_number='+989123456789',
+            code='123',
+            expired_datetime=timezone.now()
+        )
+        with self.assertRaises(ValidationError):
+            SMSCode.get_code_for_phone_number('+989123456789')
+
+    def test_wrong_code_previous_request_not_expired(self):
+        SMSCode.send_sms(phone_number='+989123456789', )
+        with self.assertRaises(ValidationError):
+            SMSCode.send_sms(phone_number='+989123456789', )
+
+    def test_wrong_code_not_in_db(self):
+        with self.assertRaises(ValidationError):
+            SMSCode.get_code_for_phone_number('+989123456789')
+
+    @override_settings(SMS_MAX_TRY_CODE=0)
+    def test_wrong_max_tried(self):
+        with self.assertRaises(ValidationError):
+            SMSCode.get_code_for_phone_number('+989123456789')

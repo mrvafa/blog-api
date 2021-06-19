@@ -1,13 +1,18 @@
+import datetime
+import random
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from Validators.birthday_validators import age_min_validator, age_max_validator
 from Validators.image_validators import profile_image_validate
 from Validators.phone_number_validators import iran_phone_validate
+from kavenegar.kavenegar import KavenegarAPI
 
 
 class User(AbstractUser):
@@ -65,3 +70,74 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class SMSCode(models.Model):
+    phone_number = models.CharField(
+        max_length=settings.PHONE_NUMBER_MAX_LENGTH,
+        validators=[iran_phone_validate],
+        unique=True,
+    )
+    created_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True, )
+    expired_datetime = models.DateTimeField(
+        default=timezone.now() + datetime.timedelta(minutes=settings.EXPIRE_DURATION),
+        blank=True,
+        null=True,
+    )
+    code = models.CharField(max_length=100)
+    tried = models.PositiveSmallIntegerField(default=0)
+
+    @staticmethod
+    def send_sms(phone_number):
+        sms_code = SMSCode.objects.filter(phone_number=phone_number).first()
+
+        if sms_code:
+            if sms_code.expired_datetime > timezone.now():
+                raise ValidationError('Previous code is not expired yet.')
+            else:
+                sms_code.delete()
+
+        code = random.randint(10000000, 99999999) if not settings.SMS_CODE_FOR_TEST else settings.SMS_CODE_FOR_TEST
+
+        respond = _send_sms(phone_number, text=code)
+        SMSCode.objects.create(phone_number=phone_number, code=code)
+        return code, respond
+
+    @staticmethod
+    def get_code_for_phone_number(phone_number):
+        sms_code = SMSCode.objects.filter(phone_number=phone_number).first()
+        if not sms_code:
+            raise ValidationError('Phone number not found.')
+        if timezone.now() > sms_code.expired_datetime:
+            sms_code.delete()
+            raise ValidationError('Code expired.')
+
+        sms_code.tried += 1
+        sms_code.save()
+
+        if sms_code.tried > settings.SMS_MAX_TRY_CODE:
+            raise ValidationError('Too many requests.')
+
+        return sms_code.code
+
+    def clean(self, *args, **kwargs):
+        if self.phone_number[0] == '0':
+            self.phone_number = '+98' + self.phone_number[1:]
+        super(SMSCode, self).clean()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(SMSCode, self).save(*args, **kwargs)
+
+
+def _send_sms(phone_number, text):
+    if settings.SMS_BACKEND == 'sms.backends.console.SmsBackend':
+        print('Sender', 'Django Backend SMS')
+        print('Receiver', phone_number)
+        print(text)
+        print("".join(['-' for _ in range(20)]))
+    elif settings.SMS_BACKEND == 'sms.backends.kavenegar.SmsBackend':
+        api = KavenegarAPI(settings.KAVENEGAR_API_KEY)
+        params = {'sender': settings.KAVENEGAR_SENDER, 'receptor': phone_number, 'message': text}
+        response = api.sms_send(params)
+        return response
