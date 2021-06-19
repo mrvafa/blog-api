@@ -46,8 +46,8 @@ Not ready!!
 - [X] Create API for user to make user admin, author, non-admin, non-author and deactivate-user.
 - [X] Create custom permission for post (is_author)
 - [X] Remove phone_validation, create function to set phone number.
+- [X] Add phone_number_conform table (requested_time, expired_time, code, phone_number) 
 - [ ] Add Author page and Tag page (get all posts by author/tag).
-- [ ] Add phone_number_conform table (requested_time, expired_time, code, phone_number) 
 - [ ] Tests
 - [ ] Finishing version 1.0
 - [ ] Search and search filtering
