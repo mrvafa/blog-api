@@ -1,13 +1,17 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.generics import (ListAPIView, RetrieveAPIView, RetrieveDestroyAPIView, RetrieveUpdateAPIView)
+from rest_framework.generics import (
+    ListAPIView, RetrieveAPIView, RetrieveDestroyAPIView, RetrieveUpdateAPIView, CreateAPIView
+)
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 from Authorizations.Authorization import IsSuperUser
-from .UserSerializer import (UserSerializer, EditUserSerializer, AuthorUserSerializers,
-                             EditUserStatusSerializers, UserChangePasswordSerializer, SetPhoneNumberSerializer)
+from .UserSerializer import (
+    UserSerializer, EditUserSerializer, AuthorUserSerializers, EditUserStatusSerializers, UserChangePasswordSerializer,
+    SetPhoneNumberSerializer, GenerateSMSCodeSerializer
+)
 from .pagination import UserPageNumberPagination
-from ..models import User
+from ..models import User, SMSCode
 
 
 # show all obj
@@ -94,3 +98,10 @@ class SetPhoneNumberAPIView(RetrieveUpdateAPIView):
     def get_object(self, **kwargs):
         if 'pk' not in self.kwargs:
             return self.request.user
+
+
+class SendSMSVerifyCode(CreateAPIView):
+    queryset = SMSCode.objects.all()
+    serializer_class = GenerateSMSCodeSerializer
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)

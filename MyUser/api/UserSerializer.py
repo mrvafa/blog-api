@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
-from MyUser.models import User
+from MyUser.models import User, SMSCode
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -98,12 +98,45 @@ class SetPhoneNumberSerializer(serializers.ModelSerializer):
         if 'phone_number' not in validated_data or 'code' not in validated_data:
             raise serializers.ValidationError({'error': 'code and phone_number is required'})
 
-        # TODO: Code value is equal to input
-        if validated_data['code'] == '123':
+        phone_number = validated_data['phone_number'] if validated_data['phone_number'].startswith('+98') else \
+            '+98' + validated_data['phone_number'][1:]
+        user_code = validated_data['code']
+
+        try:
+            code = SMSCode.get_code_for_phone_number(phone_number)
+        except Exception as e:
+            raise serializers.ValidationError({'errors': e.messages})
+
+        if user_code == code:
             try:
-                instance.set_phone_number(validated_data['phone_number'])
+                instance.set_phone_number(new_phone_number=phone_number)
             except Exception as e:
                 raise serializers.ValidationError({'error': e.messages})
             return instance
         else:
             raise serializers.ValidationError({'error': 'Code is wrong.'})
+
+
+class GenerateSMSCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SMSCode
+        fields = ('phone_number', 'created_datetime', 'expired_datetime',)
+        read_only_fields = ('created_datetime', 'expired_datetime')
+
+    def create(self, validated_data):
+        if 'phone_number' not in validated_data:
+            raise serializers.ValidationError('phone_number if required.')
+
+        phone_number = validated_data['phone_number'] if validated_data['phone_number'].startswith('+98') else \
+            '+98' + validated_data['phone_number'][1:]
+
+        if User.objects.filter(phone_number=phone_number).first():
+            raise serializers.ValidationError('Account with this phone number exist.')
+
+        try:
+            SMSCode.send_sms(phone_number=phone_number)
+        except Exception as e:
+            raise serializers.ValidationError({'errors': e.messages})
+
+        sms_object = SMSCode.objects.filter(phone_number=phone_number).first()
+        return sms_object

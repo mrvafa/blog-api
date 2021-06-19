@@ -5,7 +5,7 @@ from rest_framework.test import APIClient
 from MyUser.models import User
 
 
-@override_settings(ACCOUNT_EMAIL_VERIFICATION='none')
+@override_settings(ACCOUNT_EMAIL_VERIFICATION='none', SMS_BACKEND='sms.backends.console.SmsBackend')
 class TestListOfUsers(TestCase):
     def setUp(self):
         self.client = APIClient()
@@ -21,62 +21,59 @@ class TestListOfUsers(TestCase):
         respond = self.client.post(reverse('rest_login'), data={'username': 'user2', 'password': 'Uxm%Yr8cWveB]CL?'})
         self.user_2_token = respond.json()['key']
 
+    @override_settings(SMS_CODE_FOR_TEST='123')
     def test_ok_set_phone_number(self):
-        data = {
-            'phone_number': '09123456789',
-            'code': '123',
-        }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_1_token}')
-        respond = self.client.put(reverse('set_phone_number_user'), data=data)
-        self.assertEqual(200, respond.status_code)
-        self.assertEqual('+989123456789', User.objects.first().phone_number)
+        res = self.client.post(
+            reverse('send_sms'),
+            data={'phone_number': '09123456789'}
+        )
+        self.assertEqual(201, res.status_code)
+        res = self.client.put(
+            reverse('set_phone_number_user'),
+            data={
+                'phone_number': '09123456789',
+                'code': '123'
+            },
+        )
+        self.assertEqual(200, res.status_code)
+        self.assertEqual('+989123456789', User.objects.get(username='user1').phone_number)
 
+    @override_settings(SMS_CODE_FOR_TEST='123')
     def test_wrong_set_phone_number_wrong_code(self):
-        data = {
-            'phone_number': '09123456789',
-            'code': 'wrong-code',
-        }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_1_token}')
-        respond = self.client.put(reverse('set_phone_number_user'), data=data)
-        self.assertEqual(400, respond.status_code)
+        res = self.client.post(
+            reverse('send_sms'),
+            data={'phone_number': '09123456789'}
+        )
+        self.assertEqual(201, res.status_code)
+        res = self.client.put(
+            reverse('set_phone_number_user'),
+            data={
+                'phone_number': '09123456789',
+                'code': '1234'
+            },
+        )
+        self.assertEqual(400, res.status_code)
+        self.assertIsNone(User.objects.get(username='user1').phone_number)
+
+    def test_wrong_set_phone_number_taken_phone_number(self):
+        user = User.objects.create(email='user11@email.com', username='user11', )
+        user.set_phone_number('+989123456789')
+
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_1_token}')
+        res = self.client.post(
+            reverse('send_sms'),
+            data={'phone_number': '09123456789'}
+        )
+        self.assertEqual(400, res.status_code)
+        self.assertIsNone(User.objects.get(username='user1').phone_number)
 
     def test_wrong_set_phone_number_wrong_phone_number(self):
-        data = {
-            'phone_number': '0912345678',
-            'code': 'wrong-code',
-        }
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_1_token}')
-        respond = self.client.put(reverse('set_phone_number_user'), data=data)
-        self.assertEqual(400, respond.status_code)
-
-    def test_wrong_set_phone_number_no_phone_number(self):
-        data = {
-            'code': 'wrong-code',
-        }
-        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_1_token}')
-        respond = self.client.put(reverse('set_phone_number_user'), data=data)
-        self.assertEqual(400, respond.status_code)
-
-    def test_wrong_set_phone_number_no_code(self):
-        data = {
-            'phone_number': '09123456789',
-        }
-        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_1_token}')
-        respond = self.client.put(reverse('set_phone_number_user'), data=data)
-        self.assertEqual(400, respond.status_code)
-
-    def test_wrong_set_phone_number_phone_number_is_taken(self):
-        data = {
-            'phone_number': '09123456789',
-            'code': '123',
-        }
-        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_1_token}')
-        self.client.put(reverse('set_phone_number_user'), data=data)
-
-        data = {
-            'phone_number': '09123456789',
-            'code': '123',
-        }
-        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
-        respond = self.client.put(reverse('set_phone_number_user'), data=data)
-        self.assertEqual(400, respond.status_code)
+        res = self.client.post(
+            reverse('send_sms'),
+            data={'phone_number': '9123456789'}
+        )
+        self.assertEqual(400, res.status_code)
+        self.assertIsNone(User.objects.get(username='user1').phone_number)

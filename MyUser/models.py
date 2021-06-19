@@ -97,7 +97,7 @@ class SMSCode(models.Model):
             else:
                 sms_code.delete()
 
-        code = random.randint(10000000, 99999999)
+        code = random.randint(10000000, 99999999) if not settings.SMS_CODE_FOR_TEST else settings.SMS_CODE_FOR_TEST
 
         respond = _send_sms(phone_number, text=code)
         SMSCode.objects.create(phone_number=phone_number, code=code)
