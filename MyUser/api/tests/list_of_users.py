@@ -6,7 +6,7 @@ from MyUser.models import User
 
 
 @override_settings(ACCOUNT_EMAIL_VERIFICATION='none')
-class TestListOfUsers(TestCase):
+class TestPrivateListOfUsers(TestCase):
     def setUp(self):
         self.client = APIClient()
         user = User.objects.create(username='mrvafa', email='mrvafa@domain.com', is_superuser=True, is_staff=True)
@@ -27,12 +27,12 @@ class TestListOfUsers(TestCase):
 
     def test_ok_list_of_users(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
-        respond = self.client.get(reverse('user_list'))
+        respond = self.client.get(reverse('private_user_list'))
         self.assertEqual(200, respond.status_code)
 
     def test_ok_list_of_users_check_ordering(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
-        respond = self.client.get(reverse('user_list'))
+        respond = self.client.get(reverse('private_user_list'))
         users = respond.json()['results']
         self.assertEqual('user3', users[0]['username'])
         self.assertEqual('user2', users[1]['username'])
@@ -40,10 +40,10 @@ class TestListOfUsers(TestCase):
         self.assertEqual('mrvafa', users[3]['username'])
 
     def test_wrong_list_of_users_no_token(self):
-        respond = self.client.get(reverse('user_list'))
+        respond = self.client.get(reverse('private_user_list'))
         self.assertEqual(401, respond.status_code)
 
     def test_wrong_list_of_users_non_superuser_token(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
-        respond = self.client.get(reverse('user_list'))
+        respond = self.client.get(reverse('private_user_list'))
         self.assertEqual(403, respond.status_code)

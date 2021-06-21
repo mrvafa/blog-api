@@ -8,16 +8,16 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from Authorizations.Authorization import IsSuperUser
 from .UserSerializer import (
     UserSerializer, EditUserSerializer, AuthorUserSerializers, EditUserStatusSerializers, UserChangePasswordSerializer,
-    SetPhoneNumberSerializer, GenerateSMSCodeSerializer
+    SetPhoneNumberSerializer, GenerateSMSCodeSerializer, PrivateUserSerializer
 )
 from .pagination import UserPageNumberPagination
 from ..models import User, SMSCode
 
 
 # show all obj
-class UserListAPIView(ListAPIView):
+class PrivateUserListAPIView(ListAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = PrivateUserSerializer
     permission_classes = (IsAdminUser,)
     authentication_classes = (TokenAuthentication,)
     filter_backends = (SearchFilter, OrderingFilter)
@@ -27,17 +27,17 @@ class UserListAPIView(ListAPIView):
 
 
 # show one obj
-class UserDetailAPIView(RetrieveAPIView):
+class PrivateUserDetailAPIView(RetrieveAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = PrivateUserSerializer
     permission_classes = (IsAdminUser,)
     authentication_classes = (TokenAuthentication,)
 
 
 # destroy obj
-class UserDestroyAPIView(RetrieveDestroyAPIView):
+class PrivateUserDestroyAPIView(RetrieveDestroyAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = PrivateUserSerializer
     permission_classes = (IsAdminUser,)
     authentication_classes = (TokenAuthentication,)
 

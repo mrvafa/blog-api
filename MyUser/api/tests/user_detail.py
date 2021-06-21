@@ -6,7 +6,7 @@ from MyUser.models import User
 
 
 @override_settings(ACCOUNT_EMAIL_VERIFICATION='none')
-class TestDetailOfUser(TestCase):
+class TestPrivateDetailOfUser(TestCase):
     def setUp(self):
         self.client = APIClient()
         user = User.objects.create(username='mrvafa', email='mrvafa@domain.com', is_superuser=True, is_staff=True)
@@ -27,25 +27,25 @@ class TestDetailOfUser(TestCase):
 
     def test_ok_detail_of_user(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
-        respond = self.client.get(reverse('user_detail', args=(1,)))
+        respond = self.client.get(reverse('private_user_detail', args=(1,)))
         self.assertEqual(200, respond.status_code)
 
     def test_ok_detail_of_user_check_ordering(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
-        respond = self.client.get(reverse('user_detail', args=(1,)))
+        respond = self.client.get(reverse('private_user_detail', args=(1,)))
         user = respond.json()
         self.assertEqual('mrvafa', user['username'])
 
     def test_wrong_detail_of_user_no_token(self):
-        respond = self.client.get(reverse('user_detail', args=(1,)))
+        respond = self.client.get(reverse('private_user_detail', args=(1,)))
         self.assertEqual(401, respond.status_code)
 
     def test_wrong_detail_of_user_non_superuser_token(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.user_2_token}')
-        respond = self.client.get(reverse('user_detail', args=(3,)))
+        respond = self.client.get(reverse('private_user_detail', args=(3,)))
         self.assertEqual(403, respond.status_code)
 
     def test_wrong_edit_user(self):
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.superuser_token}')
-        respond = self.client.patch(reverse('user_detail', args=(1,)), data={'first_name': 'name'})
+        respond = self.client.patch(reverse('private_user_detail', args=(1,)), data={'first_name': 'name'})
         self.assertEqual(405, respond.status_code)
