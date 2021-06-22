@@ -1,14 +1,18 @@
 from django.urls import path
 
 from .view import (
-    UserListAPIView, UserDetailAPIView, UserDestroyAPIView, UserEditOwnAPIView, UserDestroyOwnAPIView, UserAuthor,
-    MakeUserAdmin, UserChangePasswordAPIView, SetPhoneNumberAPIView, SendSMSVerifyCode
+    PrivateUserListAPIView, PrivateUserDetailAPIView, PrivateUserDestroyAPIView, UserEditOwnAPIView,
+    UserDestroyOwnAPIView, UserAuthor, MakeUserAdmin, UserChangePasswordAPIView, SetPhoneNumberAPIView,
+    SendSMSVerifyCode, PublicUserDetailAPIView, PublicAuthorListAPIView
 )
 
 urlpatterns = [
-    path('api/', UserListAPIView.as_view(), name='user_list'),
-    path('api/<int:pk>/', UserDetailAPIView.as_view(), name='user_detail'),
-    path('api/<int:pk>/destroy/', UserDestroyAPIView.as_view(), name='user_destroy'),
+    path('api/private/', PrivateUserListAPIView.as_view(), name='private_user_list'),
+    path('api/private/<int:pk>/', PrivateUserDetailAPIView.as_view(), name='private_user_detail'),
+    path('api/private/<int:pk>/destroy/', PrivateUserDestroyAPIView.as_view(), name='user_destroy'),
+
+    path('api/authors/', PublicAuthorListAPIView.as_view(), name='public_author_list'),
+    path('api/u/<str:username>/', PublicUserDetailAPIView.as_view(), name='public_user_detail'),
 
     path('api/edit-account/', UserEditOwnAPIView.as_view(), name='edit_account'),
     path('api/delete-account/', UserDestroyOwnAPIView.as_view(), name='delete_account'),

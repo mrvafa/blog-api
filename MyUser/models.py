@@ -2,13 +2,14 @@ import datetime
 import random
 
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Permission
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from Post.models import Post
 from Validators.birthday_validators import age_min_validator, age_max_validator
 from Validators.image_validators import profile_image_validate
 from Validators.phone_number_validators import iran_phone_validate
@@ -67,6 +68,16 @@ class User(AbstractUser):
             new_phone_number = '+98' + new_phone_number[1:]
         self.phone_number = new_phone_number
         self.save()
+
+    def set_user_to_author(self):
+        author_permission = Permission.objects.get(codename='is_author')
+        self.user_permissions.add(author_permission)
+        self.save()
+
+    def posts(self):
+        posts = Post.objects.filter(author=self)
+        posts = [post.slug for post in posts]
+        return posts
 
     def __str__(self):
         return self.username

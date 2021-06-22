@@ -6,6 +6,25 @@ from rest_framework.authtoken.models import Token
 from MyUser.models import User, SMSCode
 
 
+class PrivateUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude = ('password',)
+        read_only_fields = ('phone_number',)
+
+
+class PublicUserWithoutPostsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('gender', 'birthday', 'image', 'username',)
+
+
+class PublicUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('gender', 'birthday', 'image', 'username', 'posts')
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
