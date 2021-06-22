@@ -13,6 +13,12 @@ class PrivateUserSerializer(serializers.ModelSerializer):
         read_only_fields = ('phone_number',)
 
 
+class PublicUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('gender', 'birthday', 'image', 'username', 'posts')
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

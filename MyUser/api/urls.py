@@ -3,13 +3,15 @@ from django.urls import path
 from .view import (
     PrivateUserListAPIView, PrivateUserDetailAPIView, PrivateUserDestroyAPIView, UserEditOwnAPIView,
     UserDestroyOwnAPIView, UserAuthor, MakeUserAdmin, UserChangePasswordAPIView, SetPhoneNumberAPIView,
-    SendSMSVerifyCode
+    SendSMSVerifyCode, PublicUserDetailAPIView
 )
 
 urlpatterns = [
     path('api/private/', PrivateUserListAPIView.as_view(), name='private_user_list'),
     path('api/private/<int:pk>/', PrivateUserDetailAPIView.as_view(), name='private_user_detail'),
-    path('api/private/<int:pk>/destroy/', PrivateUserDestroyAPIView.as_view(), name='private_user_destroy'),
+    path('api/private/<int:pk>/destroy/', PrivateUserDestroyAPIView.as_view(), name='user_destroy'),
+
+    path('api/u/<str:username>/', PublicUserDetailAPIView.as_view(), name='public_user_detail'),
 
     path('api/edit-account/', UserEditOwnAPIView.as_view(), name='edit_account'),
     path('api/delete-account/', UserDestroyOwnAPIView.as_view(), name='delete_account'),

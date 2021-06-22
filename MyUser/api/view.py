@@ -3,12 +3,12 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import (
     ListAPIView, RetrieveAPIView, RetrieveDestroyAPIView, RetrieveUpdateAPIView, CreateAPIView
 )
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 
 from Authorizations.Authorization import IsSuperUser
 from .UserSerializer import (
     UserSerializer, EditUserSerializer, AuthorUserSerializers, EditUserStatusSerializers, UserChangePasswordSerializer,
-    SetPhoneNumberSerializer, GenerateSMSCodeSerializer, PrivateUserSerializer
+    SetPhoneNumberSerializer, GenerateSMSCodeSerializer, PrivateUserSerializer, PublicUserSerializer
 )
 from .pagination import UserPageNumberPagination
 from ..models import User, SMSCode
@@ -32,6 +32,13 @@ class PrivateUserDetailAPIView(RetrieveAPIView):
     serializer_class = PrivateUserSerializer
     permission_classes = (IsAdminUser,)
     authentication_classes = (TokenAuthentication,)
+
+
+class PublicUserDetailAPIView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = PublicUserSerializer
+    permission_classes = (AllowAny,)
+    lookup_field = 'username'
 
 
 # destroy obj
