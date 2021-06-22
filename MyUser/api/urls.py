@@ -3,7 +3,7 @@ from django.urls import path
 from .view import (
     PrivateUserListAPIView, PrivateUserDetailAPIView, PrivateUserDestroyAPIView, UserEditOwnAPIView,
     UserDestroyOwnAPIView, UserAuthor, MakeUserAdmin, UserChangePasswordAPIView, SetPhoneNumberAPIView,
-    SendSMSVerifyCode, PublicUserDetailAPIView
+    SendSMSVerifyCode, PublicUserDetailAPIView, PublicAuthorListAPIView
 )
 
 urlpatterns = [
@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/private/<int:pk>/', PrivateUserDetailAPIView.as_view(), name='private_user_detail'),
     path('api/private/<int:pk>/destroy/', PrivateUserDestroyAPIView.as_view(), name='user_destroy'),
 
+    path('api/authors/', PublicAuthorListAPIView.as_view(), name='public_author_list'),
     path('api/u/<str:username>/', PublicUserDetailAPIView.as_view(), name='public_user_detail'),
 
     path('api/edit-account/', UserEditOwnAPIView.as_view(), name='edit_account'),

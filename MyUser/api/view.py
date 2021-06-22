@@ -8,7 +8,8 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from Authorizations.Authorization import IsSuperUser
 from .UserSerializer import (
     UserSerializer, EditUserSerializer, AuthorUserSerializers, EditUserStatusSerializers, UserChangePasswordSerializer,
-    SetPhoneNumberSerializer, GenerateSMSCodeSerializer, PrivateUserSerializer, PublicUserSerializer
+    SetPhoneNumberSerializer, GenerateSMSCodeSerializer, PrivateUserSerializer, PublicUserSerializer,
+    PublicUserWithoutPostsSerializer
 )
 from .pagination import UserPageNumberPagination
 from ..models import User, SMSCode
@@ -24,6 +25,23 @@ class PrivateUserListAPIView(ListAPIView):
     search_fields = ('username', 'first_name', 'last_name')
     pagination_class = UserPageNumberPagination
     ordering = ('-id',)
+
+
+class PublicAuthorListAPIView(ListAPIView):
+    serializer_class = PublicUserWithoutPostsSerializer
+    permission_classes = (AllowAny,)
+    filter_backends = (SearchFilter, OrderingFilter)
+    search_fields = ('username', 'first_name', 'last_name')
+    pagination_class = UserPageNumberPagination
+    ordering = ('-id',)
+
+    def get_queryset(self):
+        authors = []
+        users = User.objects.all()
+        for user in users:
+            if user.is_author():
+                authors.append(user.id)
+        return User.objects.filter(id__in=authors)
 
 
 # show one obj
