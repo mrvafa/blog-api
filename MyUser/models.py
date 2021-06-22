@@ -68,6 +68,11 @@ class User(AbstractUser):
         self.phone_number = new_phone_number
         self.save()
 
+    def set_user_to_author(self):
+        author_permission = Permission.objects.get(codename='is_author')
+        self.user_permissions.add(author_permission)
+        self.save()
+
     def __str__(self):
         return self.username
 
