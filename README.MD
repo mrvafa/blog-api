@@ -47,10 +47,10 @@ Not ready!!
 - [X] Create custom permission for post (is_author)
 - [X] Remove phone_validation, create function to set phone number.
 - [X] Add phone_number_conform table (requested_time, expired_time, code, phone_number) 
-- [ ] Add Author page and Tag page (get all posts by author/tag).
-- [ ] Tests
-- [ ] Finishing version 1.0
+- [X] Add Author page and Tag page (get all posts by author/tag).
+- [X] Tests
 - [ ] Search and search filtering
+- [ ] Finishing version 1.0
 - [ ] Create search history for user
 - [ ] Use `phonenumbers` package for phone number validations
 - [ ] Add likes, read_later, views, read

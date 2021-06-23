@@ -1,6 +1,6 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.conf import settings
 from django.db import models
-from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.text import slugify
 
 from Validators.image_validators import tag_image_validate
@@ -13,6 +13,12 @@ class Tag(models.Model):
     body = RichTextUploadingField(blank=True, null=True)
     added_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True, )
     modify_datetime = models.DateTimeField(auto_now=True, blank=True, null=True, )
+
+    def posts(self):
+        from Post.models import Post
+        posts = Post.objects.filter(tags=self)
+        posts = [post.slug for post in posts]
+        return posts
 
     def clean(self, *args, **kwargs):
         self.title = self.title.strip()
