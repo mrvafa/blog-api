@@ -93,5 +93,4 @@ class TestPrivateDetailOfUser(TestCase):
         )
         Post.objects.create(title='t1', body='b1', image=image, author=self.user)
         respond = self.client.get(reverse('public_user_detail', args=('mrvafa',)))
-        print(respond.json())
         self.assertEqual(200, respond.status_code)
