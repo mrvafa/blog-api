@@ -50,7 +50,7 @@ class TestPrivateListOfUsers(TestCase):
 
 
 @override_settings(ACCOUNT_EMAIL_VERIFICATION='none')
-class TestPublicListOfUsers(TestCase):
+class TestPublicListOfAuthors(TestCase):
     def setUp(self):
         self.client = APIClient()
         user = User.objects.create(username='mrvafa', email='mrvafa@domain.com', is_superuser=True, is_staff=True)
@@ -63,16 +63,25 @@ class TestPublicListOfUsers(TestCase):
 
         self.user_2 = User.objects.create(username='user2', email='user2@domain.com')
         self.user_2.set_password('&m"4rc&\\B5)sV3n#')
+        self.user_2.set_user_to_author()
         self.user_2.save()
         respond = self.client.post(reverse('rest_login'), data={'username': 'user2', 'password': '&m"4rc&\\B5)sV3n#'})
         self.user_2_token = respond.json()['key']
 
         self.user_3 = User.objects.create(username='user3', email='user3@domain.com')
+        self.user_3.set_user_to_author()
 
-    def test_ok_list_of_users(self):
+    def test_ok_list_of_authors(self):
         respond = self.client.get(reverse('public_author_list'))
         self.assertEqual(200, respond.status_code)
 
-    def test_wrong_list_of_users_non_superuser_token(self):
+    def test_wrong_list_of_authors_non_superuser_token(self):
         respond = self.client.get(reverse('public_author_list'))
         self.assertEqual(200, respond.status_code)
+
+    def test_ok_search(self):
+        respond = self.client.get(reverse('public_author_list') + '?search=user2')
+        authors = respond.json()['results']
+        self.assertEqual(200, respond.status_code)
+        self.assertEqual(1, len(authors))
+        self.assertEqual('user2', authors[0]['username'])
