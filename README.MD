@@ -49,7 +49,7 @@ Not ready!!
 - [X] Add phone_number_conform table (requested_time, expired_time, code, phone_number) 
 - [X] Add Author page and Tag page (get all posts by author/tag).
 - [X] Tests
-- [ ] Search and search filtering
+- [X] Search and search filtering
 - [ ] Ordering Posts, authors and tags
 - [ ] Finishing version 1.0
 - [ ] Create search history for user
