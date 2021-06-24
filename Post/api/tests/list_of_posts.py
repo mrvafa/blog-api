@@ -33,10 +33,10 @@ class TestListOfPosts(TestCase):
 
     def test_ok_list_of_tags_check_ordering(self):
         respond = self.client.get(reverse('post_list'))
-        users = respond.json()['results']
-        self.assertEqual('p3', users[0]['title'])
-        self.assertEqual('p2', users[1]['title'])
-        self.assertEqual('p1', users[2]['title'])
+        posts = respond.json()['results']
+        self.assertEqual('p3', posts[0]['title'])
+        self.assertEqual('p2', posts[1]['title'])
+        self.assertEqual('p1', posts[2]['title'])
 
     def test_ok_search_in_title(self):
         respond = self.client.get(reverse('post_list') + '?search=p1')
