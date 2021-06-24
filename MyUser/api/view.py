@@ -9,7 +9,7 @@ from Authorizations.Authorization import IsSuperUser
 from .UserSerializer import (
     UserSerializer, EditUserSerializer, AuthorUserSerializers, EditUserStatusSerializers, UserChangePasswordSerializer,
     SetPhoneNumberSerializer, GenerateSMSCodeSerializer, PrivateUserSerializer, PublicUserSerializer,
-    PublicUserWithoutPostsSerializer
+    PublicAuthorsSerializer
 )
 from .pagination import UserPageNumberPagination
 from ..models import User, SMSCode
@@ -28,7 +28,7 @@ class PrivateUserListAPIView(ListAPIView):
 
 
 class PublicAuthorListAPIView(ListAPIView):
-    serializer_class = PublicUserWithoutPostsSerializer
+    serializer_class = PublicAuthorsSerializer
     permission_classes = (AllowAny,)
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('username', 'first_name', 'last_name')
