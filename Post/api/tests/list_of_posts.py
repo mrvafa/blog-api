@@ -37,3 +37,9 @@ class TestListOfPosts(TestCase):
         self.assertEqual('p3', users[0]['title'])
         self.assertEqual('p2', users[1]['title'])
         self.assertEqual('p1', users[2]['title'])
+
+    def test_ok_search_in_title(self):
+        respond = self.client.get(reverse('post_list') + '?search=p1')
+        posts = respond.json()['results']
+        self.assertEqual(1, len(posts))
+        self.assertEqual('p1', posts[0]['title'])
