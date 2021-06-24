@@ -22,3 +22,9 @@ class TestListOfTags(TestCase):
         self.assertEqual('t3', users[0]['title'])
         self.assertEqual('t2', users[1]['title'])
         self.assertEqual('t1', users[2]['title'])
+
+    def test_ok_search(self):
+        respond = self.client.get(reverse('tag_list') + '?search=t1')
+        tags = respond.json()['results']
+        self.assertEqual(1, len(tags))
+        self.assertEqual('t1', tags[0]['title'])
