@@ -43,3 +43,13 @@ class TestListOfPosts(TestCase):
         posts = respond.json()['results']
         self.assertEqual(1, len(posts))
         self.assertEqual('p1', posts[0]['title'])
+
+    def test_ok_order_title(self):
+        respond = self.client.get(reverse('post_list') + '?ordering=-title')
+        posts = respond.json()['results']
+        self.assertEqual('p3', posts[0]['title'])
+
+    def test_ok_order_id(self):
+        respond = self.client.get(reverse('post_list') + '?ordering=id')
+        posts = respond.json()['results']
+        self.assertEqual('p1', posts[0]['title'])
