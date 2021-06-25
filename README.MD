@@ -50,8 +50,8 @@ Not ready!!
 - [X] Add Author page and Tag page (get all posts by author/tag).
 - [X] Tests
 - [X] Search and search filtering
-- [ ] Ordering Posts, authors and tags
-- [ ] Finishing version 1.0
+- [X] Ordering Posts, authors and tags
+- [X] Finishing version 1.0
 - [ ] Create search history for user
 - [ ] Use `phonenumbers` package for phone number validations
 - [ ] Add likes, read_later, views, read
