@@ -85,3 +85,8 @@ class TestPublicListOfAuthors(TestCase):
         self.assertEqual(200, respond.status_code)
         self.assertEqual(1, len(authors))
         self.assertEqual('user2', authors[0]['username'])
+
+    def test_ok_ordering_username(self):
+        respond = self.client.get(reverse('public_author_list') + '?ordering=-username')
+        authors = respond.json()['results']
+        self.assertEqual('user3', authors[0]['username'])
