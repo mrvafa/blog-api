@@ -28,3 +28,8 @@ class TestListOfTags(TestCase):
         tags = respond.json()['results']
         self.assertEqual(1, len(tags))
         self.assertEqual('t1', tags[0]['title'])
+
+    def test_ok_ordering_title(self):
+        respond = self.client.get(reverse('tag_list') + '?ordering=-title')
+        tags = respond.json()['results']
+        self.assertEqual('t3', tags[0]['title'])
