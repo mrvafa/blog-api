@@ -46,7 +46,7 @@ can post articles.
 | GET | /profile/api/private/<int:pk>/ | None| id, last_login, is_superuser, username, first_name, last_name, is_staff, is_active, date_joined, email, gender, birthday, phone_number, image, groups, user_permissions | Token (Admin) | detail of user by `pk`|
 | DELETE | /profile/api/private/<int:pk>/destroy/ | None| None | Token (Admin) | delete user by `pk`|
 | GET | /profile/api/authors/ | None|  `<list-of-authors>` | None | get all authors|
-| GET | /profile/api/u/<username>/ | None | username, image, posts, birthday, gender | None | get author by `username`|
+| GET | /profile/api/u/<str:username>/ | None | username, image, posts, birthday, gender | None | get author by `username`|
 | GET & PATCH & PUT | /profile/api/edit-account/ | username, first_name, last_name, birthday, gender| username, first_name, last_name, birthday, gender, email , password | Token | edit account|
 | DELETE | /profile/api/delete-account/ | None | None | Token | delete account |
 | PUT | /profile/api/change-password/ | new_password1, new_password2 | None | Token | Change password |
