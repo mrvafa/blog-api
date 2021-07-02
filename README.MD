@@ -32,7 +32,7 @@ can post articles.
 | POST | /login/  | (Username or email), password| key | None |Change user password after resting|
 | GET & PATCH & PUT | /profile/  | None or (username, first_name, last_name)| pk, username, first_name, last_name, email | Token |Get user info and change some data|
 | POST | /account-confirm-email/(?P<key>[-:\w]+)/ | key| key| None | Confirm email |
-| GET | /post/api/ | None |<list-of-posts>| None| List of posts|
+| GET | /post/api/ | None |`<list-of-posts>`| None| List of posts|
 | GET | /post/api/s/<str:slug>/ | None | id, title, slug, body, tags, image, added_datetime modify_datetime |None |  Detail post by `slug`|
 | PATCH | /post/api/s/<str:slug>/edit/ | title, body, tags, image|id, title, slug, body, tags, image, added_datetime modify_datetime | Token (Author of post) |  Edit post with `slug`|
 | DELETE | /post/api/s/<str:slug>/destroy/ | Token (Author of post or Admin)| None | Token (Author of post or admin) |  Delete post by `slug`|
