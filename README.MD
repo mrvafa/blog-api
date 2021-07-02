@@ -44,7 +44,7 @@ can post articles.
 | POST | /tag/create/ | title, image, body | id, title, slug, body, image, added_datetime modify_datetime|Token (Author) | Create tag|
 | GET | /profile/api/private/ | None | `<list-of-users>` |Token (Admin) | list of all users|
 | GET | /profile/api/private/<int:pk>/ | None| id, last_login, is_superuser, username, first_name, last_name, is_staff, is_active, date_joined, email, gender, birthday, phone_number, image, groups, user_permissions | Token (Admin) | detail of user by `pk`|
-| DELETE | /profile/api/private/<pk>/destroy/ | None| None | Token (Admin) | delete user by `pk`|
+| DELETE | /profile/api/private/<int:pk>/destroy/ | None| None | Token (Admin) | delete user by `pk`|
 | GET | /profile/api/authors/ | None|  `<list-of-authors>` | None | get all authors|
 | GET | /profile/api/u/<username>/ | None | username, image, posts, birthday, gender | None | get author by `username`|
 | GET & PATCH & PUT | /profile/api/edit-account/ | username, first_name, last_name, birthday, gender| username, first_name, last_name, birthday, gender, email , password | Token | edit account|
