@@ -29,31 +29,31 @@ can post articles.
 | POST | /register/  | username, email, password1, password2 |detail| None|Create user|
 | POST | /password/reset/  | email| detail | None |Reset user password|
 | POST | /password/reset/confirm/  | new_password1, new_password2, uid, token| detail| None|Change user password after resting `/password/reset/`|
-| POST | /login/  | (Username or email), password| key | None |Change user password after resting|
+| POST | /login/  | (Username or email), password| key | None |login|
 | GET & PATCH & PUT | /profile/  | None or (username, first_name, last_name)| pk, username, first_name, last_name, email | Token |Get user info and change some data|
-| POST | /account-confirm-email/(?P<key>[-:\w]+)/ | key| key| None | Confirm email |
+| POST | /account-confirm-email/(`?P<key>[-:\w]+)`/ | key| key| None | Confirm email |
 | GET | /post/api/ | None |`<list-of-posts>`| None| List of posts|
-| GET | /post/api/s/<str:slug>/ | None | id, title, slug, body, tags, image, added_datetime modify_datetime |None |  Detail post by `slug`|
-| PATCH | /post/api/s/<str:slug>/edit/ | title, body, tags, image|id, title, slug, body, tags, image, added_datetime modify_datetime | Token (Author of post) |  Edit post with `slug`|
-| DELETE | /post/api/s/<str:slug>/destroy/ | Token (Author of post or Admin)| None | Token (Author of post or admin) |  Delete post by `slug`|
+| GET | /post/api/s/`<str:slug>`/ | None | id, title, slug, body, tags, image, added_datetime modify_datetime |None |  Detail post by `slug`|
+| PATCH | /post/api/s/`<str:slug>`/edit/ | title, body, tags, image|id, title, slug, body, tags, image, added_datetime modify_datetime | Token (Author of post) |  Edit post with `slug`|
+| DELETE | /post/api/s/`<str:slug>`/destroy/ | Token (Author of post or Admin)| None | Token (Author of post or admin) |  Delete post by `slug`|
 | POST | /post/create/ | title, body, tags, image|id, title, slug, body, tags, image, added_datetime modify_datetime | Token (Author)| Create post|
-| GET | /tag/api/ | None | <list-of-tags> | None | List of tags|
-| GET | /tag/api/s/<str:slug>/ | None | id, title, slug, body, image, added_datetime modify_datetime | None |  Detail of tag `slug`|
-| PATCH | /tag/api/s/<str:slug>/edit/ | title, body, image | id, title, slug, body, image, added_datetime modify_datetime | Token (Author) |  Edit tag by `slug`|
-| DELETE | /tag/api/s/<str:slug>/destroy/ |None | None | Token (Admin) |  Delete tag by `slug`|
+| GET | /tag/api/ | None | `<list-of-tags>` | None | List of tags|
+| GET | /tag/api/s/`<str:slug>`/ | None | id, title, slug, body, image, added_datetime modify_datetime | None |  Detail of tag `slug`|
+| PATCH | /tag/api/s/`<str:slug>`/edit/ | title, body, image | id, title, slug, body, image, added_datetime modify_datetime | Token (Author) |  Edit tag by `slug`|
+| DELETE | /tag/api/s/`<str:slug>`/destroy/ |None | None | Token (Admin) |  Delete tag by `slug`|
 | POST | /tag/create/ | title, image, body | id, title, slug, body, image, added_datetime modify_datetime|Token (Author) | Create tag|
 | GET | /profile/api/private/ | None | `<list-of-users>` |Token (Admin) | list of all users|
-| GET | /profile/api/private/<int:pk>/ | None| id, last_login, is_superuser, username, first_name, last_name, is_staff, is_active, date_joined, email, gender, birthday, phone_number, image, groups, user_permissions | Token (Admin) | detail of user by `pk`|
-| DELETE | /profile/api/private/<int:pk>/destroy/ | None| None | Token (Admin) | delete user by `pk`|
+| GET | /profile/api/private/`<int:pk>`/ | None| id, last_login, is_superuser, username, first_name, last_name, is_staff, is_active, date_joined, email, gender, birthday, phone_number, image, groups, user_permissions | Token (Admin) | detail of user by `pk`|
+| DELETE | /profile/api/private/`<int:pk>`/destroy/ | None| None | Token (Admin) | delete user by `pk`|
 | GET | /profile/api/authors/ | None|  `<list-of-authors>` | None | get all authors|
-| GET | /profile/api/u/<str:username>/ | None | username, image, posts, birthday, gender | None | get author by `username`|
+| GET | /profile/api/u/`<str:username>`/ | None | username, image, posts, birthday, gender | None | get author by `username`|
 | GET & PATCH & PUT | /profile/api/edit-account/ | username, first_name, last_name, birthday, gender| username, first_name, last_name, birthday, gender, email , password | Token | edit account|
 | DELETE | /profile/api/delete-account/ | None | None | Token | delete account |
 | PUT | /profile/api/change-password/ | new_password1, new_password2 | None | Token | Change password |
 | POST | /profile/api/send-sms/ | phone_number | None | Token | send sms to phone_number |
 | PUT | /profile/api/set-phone-number/ | phone_number, code | None | Token | set phone_number if code is right |
-| PUT | /profile/api/<int:pk>/change-user-author/ | is_author | None | Token (Admin) | change user author permission |
-| PUT | /profile/api/<int:pk>/change-user-permissions/ | is_admin, is_active, is_staff | is_admin, is_active, is_staff | Token (Admin) | set phone_number if code is right |
+| PUT | /profile/api/`<int:pk>`/change-user-author/ | is_author | None | Token (Admin) | change user author permission |
+| PUT | /profile/api/`<int:pk>`/change-user-permissions/ | is_admin, is_active, is_staff | is_admin, is_active, is_staff | Token (Admin) | set phone_number if code is right |
 
 <a name="todo"></a>
 
