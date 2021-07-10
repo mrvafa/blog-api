@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+
+  db:
+    image: postgres
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  web:
+    build: .
+    env_file:
+      - ./.env
+    environment:
+      - DJANGO_SETTINGS_MODULE
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
+    container_name: web
+    volumes:
+      - .:/opt/services/project/src
+      - ./media:/opt/services/project/media
+    depends_on:
+      - db
+    ports:
+    - 80:8000

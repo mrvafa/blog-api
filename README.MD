@@ -7,6 +7,7 @@ can post articles.
 
 1. [Installation](#installation)
 2. [Usage examples](#usage-examples)
+4. [Docker](#docker)
 3. [TODO](#todo)
 
 <a name="installation"></a>
@@ -54,6 +55,28 @@ can post articles.
 | PUT | /profile/api/set-phone-number/ | phone_number, code | None | Token | set phone_number if code is right |
 | PUT | /profile/api/`<int:pk>`/change-user-author/ | is_author | None | Token (Admin) | change user author permission |
 | PUT | /profile/api/`<int:pk>`/change-user-permissions/ | is_admin, is_active, is_staff | is_admin, is_active, is_staff | Token (Admin) | set phone_number if code is right |
+
+
+<a name="docker"></a>
+## Docker
+1. Use the following command to create `.env`. `cp .env.template .env`.
+2. Open `.env` file and complete it.   
+3. Run `docker-compose up --build`.
+4. Send POST request to `/register/` for creating user.
+5. Use `docker ps` to get container id for blog-api_web.
+6. Use `docker exec -it <container-id> bash`
+7. Run `python manage.py shell`
+8. Run the following command.
+```
+ from MyUser.models import User
+ user = User.objects.first()
+ user.is_staff = True
+ user.is_superuser = True
+ user.save()
+```
+9. Press `ctrl+d` to exit.
+10. Use `ctrl+shift+d` to exit the container.
+11. Enjoy!
 
 <a name="todo"></a>
 
