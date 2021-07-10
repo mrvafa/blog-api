@@ -62,9 +62,10 @@ can post articles.
 1. Use the following command to create `.env`. `cp .env.template .env`.
 2. Open `.env` file and complete it.   
 3. Run `docker-compose up --build`.
-4. Send POST request to `/register/` for creating user.
-5. Use `docker ps` to get container id for blog-api_web.
-6. Use `docker exec -it <container-id> bash`
+4. Use `docker ps` to get container id for blog-api_web.
+5. Use `docker exec -it <container-id> bash`.
+6. Run `python manage.py migrate`.   
+7. Send POST request to `/register/` for creating user.
 7. Run `python manage.py shell`
 8. Run the following command.
 ```
