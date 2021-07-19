@@ -7,7 +7,7 @@ coverage==5.5
 cryptography==3.4.7
 decorator==5.0.8
 defusedxml==0.7.1
-Django==3.2.3
+Django==3.2.5
 django-allauth==0.44.0
 django-ckeditor==6.0.0
 django-cleanup==5.2.0
@@ -48,6 +48,6 @@ sqlparse==0.4.1
 tblib==1.7.0
 traitlets==5.0.5
 twilio==6.60.0
-urllib3==1.26.4
+urllib3==1.26.6
 uWSGI==2.0.19.1
 wcwidth==0.2.5
