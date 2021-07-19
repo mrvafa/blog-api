@@ -8,15 +8,12 @@ services:
       - ./.env
     environment:
       - DJANGO_SETTINGS_MODULE
-
     container_name: web
-    volumes:
-      - .:/opt/services/project/src
-      - ./media:/opt/services/project/media
     ports:
-      - 80:8000
+      - "127.0.0.1:8080:8080"
     depends_on:
       - db
+    restart: unless-stopped
 
   db:
     image: postgres
@@ -26,3 +23,4 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    restart: unless-stopped

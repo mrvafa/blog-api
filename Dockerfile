@@ -1,10 +1,26 @@
 FROM python:3
 
-WORKDIR /project
+MAINTAINER mrvafa
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN apt-get update
+RUN apt-get install apache2 apache2-dev libapache2-mod-wsgi-py3 libpq-dev binutils libproj-dev gdal-bin -y
+RUN pip install mod_wsgi
+RUN pip install ptvsd
 
-COPY . .
+RUN mkdir /srv/media static logs
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+VOLUME ["/srv/media/", "/srv/logs/"]
+
+COPY requirements.txt /srv
+RUN pip install -r /srv/requirements.txt
+
+COPY . /srv
+
+
+EXPOSE 8000
+
+WORKDIR /srv
+
+COPY ./docker-entrypoint.sh /
+RUN ["chmod", "+x", "/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
